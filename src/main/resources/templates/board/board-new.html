@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
+    <title>게시글 등록</title>
+    <link/>
+</head>
+<body>
+<header th:replace="~{fragment/base::default_topbar}"></header>
+<main>
+    <div class="container py-4">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h5 class="display-5 fw-bold mb-3">게시글 등록</h5>
+                <hr>
+                <form action="/api/boards" method="post">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">제목</span>
+                        <input type="text" class="form-control" id="title" name="title">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">작성자</span>
+                        <input type="text" class="form-control" id="editor" name="editor">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">본문</span>
+                        <textarea class="form-control" rows="10" id="content" name="content"></textarea>
+                    </div>
+                    <hr>
+                    <a class="btn btn-secondary" type="button" href="/boards">뒤로가기</a>
+                    <a class="btn btn-primary float-end" type="button" th:onclick="create_board()">등록</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragment/base::default_footer(~{::script})}">
+    <script src="/js/board-func.js"></script>
+</footer>
+</body>
+</html>

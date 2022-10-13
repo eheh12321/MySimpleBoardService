@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
+    <title>게시글 목록</title>
+    <link/>
+</head>
+<body>
+<header th:replace="~{fragment/base::default_topbar}"></header>
+<main>
+    <div class="container py-4">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <div class="row">
+                    <div class="col-8">
+                        <h5 class="display-5 fw-bold mb-3">게시글 목록</h5>
+                    </div>
+                    <div class="col-4">
+                        <a class="btn btn-primary float-end" type="button" href="/boards/new">게시글 등록</a>
+                    </div>
+                </div>
+                <hr>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성 시각</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="board : ${boards}">
+                        <th th:text="${board.id}">1</th>
+                        <td>
+                            <a th:text="${board.title}" th:href="@{/boards/{boardId}(boardId=${board.id})}">제목</a>
+                        </td>
+                        <td th:text="${board.editor}">작성자</td>
+                        <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}">yyyy-MM-dd HH:mm:ss</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragment/base::default_footer(~{::script})}">
+    <script/>
+</footer>
+</body>
+</html>
