@@ -24,10 +24,25 @@ public class BoardService {
         return BoardResponseDto.from(findById(boardId));
     }
 
-    @Transactional(readOnly = true) // 전체 목록 읽기
-    public Page<BoardResponseDto> readAll(Pageable pageable) {
-        return boardRepository.findAll(pageable)
-                .map(BoardResponseDto::from);
+    @Transactional(readOnly = true)
+    public Page<BoardResponseDto> searchBoards(String searchType, String searchValue, Pageable pageable) {
+        if(searchValue == null || searchValue.isBlank()) { // 검색어가 비어있으면 기본 정렬(ID 내림차순)값 반환
+            return boardRepository.findAll(pageable).map(BoardResponseDto::from);
+        }
+
+        Page<BoardResponseDto> dto = null;
+        switch(searchType) {
+            case "EDITOR":
+                dto = boardRepository.findByEditorContainingIgnoreCase(searchValue, pageable)
+                        .map(BoardResponseDto::from); break;
+            case "TITLE":
+                dto = boardRepository.findAllByTitleContainingIgnoreCase(searchValue, pageable)
+                        .map(BoardResponseDto::from); break;
+            case "CONTENT":
+                dto = boardRepository.findAllByContentContainingIgnoreCase(searchValue, pageable)
+                        .map(BoardResponseDto::from); break;
+        }
+        return dto;
     }
 
     public Long create(BoardRequestDto dto) {

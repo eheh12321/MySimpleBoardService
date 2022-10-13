@@ -19,31 +19,61 @@
                     </div>
                 </div>
                 <hr>
+                <form action="/boards" method="get">
+                    <div class="row">
+                        <div class="col-2">
+                            <select class="form-select" id="select-searchType" name="searchType">
+                                <option th:each="searchType : ${searchTypes}"
+                                        th:selected="${#strings.equals(searchType.name, param.searchType)}"
+                                        th:text="${searchType.description}"
+                                        th:value="${searchType.name}"
+                                >제목
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-10">
+                            <div class="input-group mb-3">
+                                <input type="text" id="input-searchValue" name="searchValue"
+                                       th:value="${param.searchValue}"
+                                       class="form-control" placeholder="검색어를 입력하세요...">
+                                <button class="btn btn-outline-secondary" type="submit">검색</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <table class="table table-hover mb-5">
                     <thead>
                     <tr class="table-secondary">
                         <th>
                             <a class="text-dark text-decoration-none" th:href="@{/boards(
                             page=${boards.number},
-                            sort='id' + (${boards.sort.getOrderFor('id')} != null ? (${boards.sort.getOrderFor('id').direction.name} == 'DESC' ? '' : ',desc') : '')
+                            sort='id' + (${boards.sort.getOrderFor('id')} != null ? (${boards.sort.getOrderFor('id').direction.name} == 'DESC' ? '' : ',desc') : ''),
+                            searchType=${param.searchType},
+                            searchValue=${param.searchValue}
                             )}">#</a>
                         </th>
                         <th>
                             <a class="text-dark text-decoration-none" th:href="@{/boards(
                             page=${boards.number},
-                            sort='title' + (${boards.sort.getOrderFor('title')} != null ? (${boards.sort.getOrderFor('title').direction.name} == 'DESC' ? '' : ',desc') : '')
+                            sort='title' + (${boards.sort.getOrderFor('title')} != null ? (${boards.sort.getOrderFor('title').direction.name} == 'DESC' ? '' : ',desc') : ''),
+                            searchType=${param.searchType},
+                            searchValue=${param.searchValue}
                             )}">제목</a>
                         </th>
                         <th>
                             <a class="text-dark text-decoration-none" th:href="@{/boards(
                             page=${boards.number},
-                            sort='editor' + (${boards.sort.getOrderFor('editor')} != null ? (${boards.sort.getOrderFor('editor').direction.name} == 'DESC' ? '' : ',desc') : '')
+                            sort='editor' + (${boards.sort.getOrderFor('editor')} != null ? (${boards.sort.getOrderFor('editor').direction.name} == 'DESC' ? '' : ',desc') : ''),
+                            searchType=${param.searchType},
+                            searchValue=${param.searchValue}
                             )}">작성자</a>
                         </th>
                         <th>
                             <a class="text-dark text-decoration-none" th:href="@{/boards(
                             page=${boards.number},
-                            sort='createdAt' + (${boards.sort.getOrderFor('createdAt')} != null ? (${boards.sort.getOrderFor('createdAt').direction.name} == 'DESC' ? '' : ',desc') : '')
+                            sort='createdAt' + (${boards.sort.getOrderFor('createdAt')} != null ? (${boards.sort.getOrderFor('createdAt').direction.name} == 'DESC' ? '' : ',desc') : ''),
+                            searchType=${param.searchType},
+                            searchValue=${param.searchValue}
                             )}">작성 시각</a>
                         </th>
                     </tr>
@@ -65,27 +95,27 @@
                     <ul class="pagination justify-content-center">
                         <li class="page-item" th:if="${boards.number} != 0">
                             <a class="page-link"
-                               th:href="@{/boards(page=0,sort=${param.sort})}"
+                               th:href="@{/boards(page=0,sort=${param.sort},searchType=${param.searchType},searchValue=${param.searchValue})}"
                             >&lt;&lt;</a>
                         </li>
                         <li class="page-item" th:if="${boards.number} != 0">
                             <a class="page-link"
-                               th:href="@{/boards(page=${boards.number - 1},sort=${param.sort})}"
+                               th:href="@{/boards(page=${boards.number - 1},sort=${param.sort},searchType=${param.searchType},searchValue=${param.searchValue})}"
                             >&lt;</a>
                         </li>
                         <li class="page-item" th:each="paginationNumber : ${paginationNumbers}">
                             <a class="page-link"
                                th:class="'page-link ' + (${boards.number} == ${paginationNumber} ? 'disabled text-bg-secondary' : '')"
                                th:text="${paginationNumber + 1}"
-                               th:href="@{/boards(page=${paginationNumber},sort=${param.sort})}">1</a>
+                               th:href="@{/boards(page=${paginationNumber},sort=${param.sort},searchType=${param.searchType},searchValue=${param.searchValue})}">1</a>
                         </li>
                         <li class="page-item" th:if="${boards.number} < ${boards.totalPages - 1}">
                             <a class="page-link"
-                               th:href="@{/boards(page=${boards.number + 1},sort=${param.sort})}">&gt;</a>
+                               th:href="@{/boards(page=${boards.number + 1},sort=${param.sort},searchType=${param.searchType},searchValue=${param.searchValue})}">&gt;</a>
                         </li>
                         <li class="page-item" th:if="${boards.number} < ${boards.totalPages - 1}">
                             <a class="page-link"
-                               th:href="@{/boards(page=${boards.totalPages - 1},sort=${param.sort})}">&gt;&gt;</a>
+                               th:href="@{/boards(page=${boards.totalPages - 1},sort=${param.sort},searchType=${param.searchType},searchValue=${param.searchValue})}">&gt;&gt;</a>
                         </li>
                     </ul>
                 </nav>
