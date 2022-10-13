@@ -26,7 +26,7 @@ public class BoardService {
 
     @Transactional(readOnly = true) // 전체 목록 읽기
     public Page<BoardResponseDto> readAll(Pageable pageable) {
-        return boardRepository.findAllByOrderByIdDesc(pageable)
+        return boardRepository.findAll(pageable)
                 .map(BoardResponseDto::from);
     }
 
