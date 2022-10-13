@@ -12,7 +12,7 @@ public class BoardResponseDto {
     private final String title;
     private final String editor;
     private final String content;
-    private final LocalDateTime createdDate;
+    private final LocalDateTime createdAt;
 
     public static BoardResponseDto from(Board board) {
         return new BoardResponseDto(
@@ -20,6 +20,6 @@ public class BoardResponseDto {
                 board.getTitle(),
                 board.getEditor(),
                 board.getContent(),
-                board.getCreatedDate());
+                board.getCreatedAt());
     }
 }
