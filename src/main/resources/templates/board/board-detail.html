@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
+    <title>게시글 상세</title>
+    <link/>
+</head>
+<body>
+<header th:replace="~{fragment/base::default_topbar}"></header>
+<main>
+    <div class="container py-4">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h5 class="display-5 fw-bold mb-3">게시글 상세</h5>
+                <hr>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">제목</span>
+                    <input type="text" class="form-control" id="title" th:value="${board.title}" disabled>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">작성자</span>
+                    <input type="text" class="form-control" id="editor" th:value="${board.editor}" disabled>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">작성 시각</span>
+                    <input type="text" class="form-control" id="createdDate"
+                           th:value="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}" disabled>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">본문</span>
+                    <textarea class="form-control" rows="10" th:text="${board.content}" disabled></textarea>
+                </div>
+                <hr>
+                <a class="btn btn-secondary" type="button" href="/boards">뒤로가기</a>
+                <a class="btn btn-warning float-end" type="button" href="/boards"
+                   th:onclick="'delete_board(' + ${board.id} + ');'">삭제</a>
+                <a class="btn btn-success float-end me-2" type="button"
+                   th:href="@{/boards/edit/{boardId}(boardId=${board.id})}">수정</a>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragment/base::default_footer(~{::script})}">
+    <script src="/js/board-func.js"></script>
+</footer>
+</body>
+</html>
