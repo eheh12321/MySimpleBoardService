@@ -5,10 +5,9 @@ import lombok.Data;
 
 @Data
 public class BoardRequestDto {
-
-    private final String title;
-    private final String editor;
-    private final String content;
+    private String title;
+    private String editor;
+    private String content;
 
     public Board toEntity() {
         return Board.builder()
