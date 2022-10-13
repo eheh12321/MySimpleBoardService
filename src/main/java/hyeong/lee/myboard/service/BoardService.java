@@ -3,6 +3,7 @@ package hyeong.lee.myboard.service;
 import hyeong.lee.myboard.domain.Board;
 import hyeong.lee.myboard.dto.BoardRequestDto;
 import hyeong.lee.myboard.dto.BoardResponseDto;
+import hyeong.lee.myboard.dto.BoardWithRepliesResponseDto;
 import hyeong.lee.myboard.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,11 @@ public class BoardService {
     @Transactional(readOnly = true) // 단건 읽기
     public BoardResponseDto readById(Long boardId) {
         return BoardResponseDto.from(findById(boardId));
+    }
+
+    @Transactional(readOnly = true) // 댓글 정보와 함께 단건 읽기
+    public BoardWithRepliesResponseDto readWithRepliesById(Long boardId) {
+        return BoardWithRepliesResponseDto.from(findById(boardId));
     }
 
     @Transactional(readOnly = true)

@@ -60,3 +60,40 @@ function delete_board(boardId) {
         })
     }
 }
+
+function add_reply(boardId) {
+    const reply_data = {
+        boardId: boardId,
+        editor: $("#replyEditor").val(),
+        content: $("#replyContent").val()
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/replies',
+        datatype: 'JSON',
+        data: JSON.stringify(reply_data),
+        contentType: 'application/json; charset=utf-8',
+        success: function (result) {
+            window.location.replace('/boards/' + boardId);
+        },
+        error: function(result) {
+            alert("등록에 실패했습니다");
+        }
+    });
+}
+
+function delete_reply(replyId) {
+    if (confirm("삭제하시겠습니까?")) {
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/replies/' + replyId,
+            success: function (result) {
+                window.location.reload();
+            },
+            error: function (result) {
+                alert("삭제에 실패했습니다");
+            }
+        })
+    }
+}

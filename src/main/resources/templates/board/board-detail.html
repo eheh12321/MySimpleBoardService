@@ -35,6 +35,32 @@
                    th:onclick="'delete_board(' + ${board.id} + ');'">삭제</a>
                 <a class="btn btn-success float-end me-2" type="button"
                    th:href="@{/boards/edit/{boardId}(boardId=${board.id})}">수정</a>
+
+                <hr>
+                <h5 class="display-5 fw-bold mb-3">댓글 목록</h5>
+                <hr>
+                <div class="col-md-6 mb-3" th:each="reply : ${replies}">
+                    <div class="h-100 p-3 text-bg-dark rounded-3">
+                        <a class="btn btn-danger float-end" type="button"
+                            th:onclick="'delete_reply(' + ${reply.id} + ');'">삭제</a>
+                        <p class="fs-3 fw-bold" th:text="${reply.editor}"></p>
+                        <p th:text="${reply.content}"></p>
+                        <p class="text-end text-secondary"
+                                th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                    </div>
+                </div>
+                <hr>
+                <form>
+                    <div class="mb-3">
+                        <label for="replyEditor" class="form-label">작성자</label>
+                        <input type="text" class="form-control" id="replyEditor" placeholder="닉네임을 입력하세요...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="replyContent" class="form-label">본문</label>
+                        <textarea class="form-control" id="replyContent" rows="3" placeholder="댓글을 입력하세요..."></textarea>
+                    </div>
+                    <a class="btn btn-primary float-end me-2" type="button" th:onclick="'add_reply(' + ${board.id} + ');'">등록</a>
+                </form>
             </div>
         </div>
     </div>

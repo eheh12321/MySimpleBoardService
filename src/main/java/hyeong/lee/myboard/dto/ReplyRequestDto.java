@@ -1,21 +1,21 @@
 package hyeong.lee.myboard.dto;
 
 import hyeong.lee.myboard.domain.Board;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import hyeong.lee.myboard.domain.Reply;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardRequestDto {
-    private String title;
+public class ReplyRequestDto {
+
+    private Long boardId;
     private String editor;
     private String content;
 
-    public Board toEntity() {
-        return Board.builder()
-                .title(title)
+    public Reply toEntity(Board board) {
+        return Reply.builder()
+                .board(board)
                 .editor(editor)
                 .content(content).build();
     }
