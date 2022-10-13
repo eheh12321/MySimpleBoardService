@@ -19,10 +19,25 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    @Transactional(readOnly = true)
+    public BoardResponseDto read(Long boardId) {
+        return BoardResponseDto.from(findById(boardId));
+    }
+
     public Long create(BoardRequestDto dto) {
         Board board = dto.toEntity();
         Board savedBoard = boardRepository.save(board);
         return savedBoard.getId();
+    }
+
+    public void update(Long boardId, BoardRequestDto dto) {
+        Board board = findById(boardId);
+        board.updateContent(dto.getTitle(), dto.getContent());
+    }
+
+    public void delete(Long boardId) {
+        Board board = findById(boardId);
+        boardRepository.delete(board);
     }
 
     @Transactional(readOnly = true)
@@ -32,9 +47,8 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public BoardResponseDto findById(Long boardId) {
+    public Board findById(Long boardId) {
         return boardRepository.findById(boardId)
-                .map(BoardResponseDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다 -> " + boardId));
     }
 }

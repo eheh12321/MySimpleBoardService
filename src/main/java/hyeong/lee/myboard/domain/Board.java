@@ -23,4 +23,8 @@ public class Board extends AuditingFields {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    public void updateContent(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

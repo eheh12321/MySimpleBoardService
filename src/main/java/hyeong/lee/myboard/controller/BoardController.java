@@ -33,9 +33,17 @@ public class BoardController {
 
     @GetMapping("/{boardId}")
     public String boardDetail(@PathVariable Long boardId, Model model) {
-        BoardResponseDto dto = boardService.findById(boardId);
+        BoardResponseDto dto = boardService.read(boardId);
         model.addAttribute("board", dto);
 
         return "board/board-detail";
+    }
+
+    @GetMapping("/edit/{boardId}")
+    public String editBoard(@PathVariable Long boardId, Model model) {
+        BoardResponseDto dto = boardService.read(boardId);
+        model.addAttribute("board", dto);
+
+        return "board/board-edit";
     }
 }
