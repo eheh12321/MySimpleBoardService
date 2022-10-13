@@ -19,9 +19,15 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    @Transactional(readOnly = true)
-    public BoardResponseDto read(Long boardId) {
+    @Transactional(readOnly = true) // 단건 읽기
+    public BoardResponseDto readById(Long boardId) {
         return BoardResponseDto.from(findById(boardId));
+    }
+
+    @Transactional(readOnly = true) // 전체 목록 읽기
+    public Page<BoardResponseDto> readAll(Pageable pageable) {
+        return boardRepository.findAllByOrderByIdDesc(pageable)
+                .map(BoardResponseDto::from);
     }
 
     public Long create(BoardRequestDto dto) {
@@ -38,12 +44,6 @@ public class BoardService {
     public void delete(Long boardId) {
         Board board = findById(boardId);
         boardRepository.delete(board);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<BoardResponseDto> findAllBoards(Pageable pageable) {
-        return boardRepository.findAll(pageable)
-                .map(BoardResponseDto::from);
     }
 
     @Transactional(readOnly = true)

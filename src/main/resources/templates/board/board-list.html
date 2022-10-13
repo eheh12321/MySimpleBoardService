@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <hr>
-                <table class="table">
+                <table class="table mb-5">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -35,10 +35,40 @@
                             <a th:text="${board.title}" th:href="@{/boards/{boardId}(boardId=${board.id})}">제목</a>
                         </td>
                         <td th:text="${board.editor}">작성자</td>
-                        <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}">yyyy-MM-dd HH:mm:ss</td>
+                        <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}">yyyy-MM-dd
+                            HH:mm:ss
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:if="${boards.number} != 0">
+                            <a class="page-link"
+                               th:href="@{/boards(page=0)}"
+                            >&lt;&lt;</a>
+                        </li>
+                        <li class="page-item" th:if="${boards.number} != 0">
+                            <a class="page-link"
+                               th:href="@{/boards(page=${boards.number - 1})}"
+                            >&lt;</a>
+                        </li>
+                        <li class="page-item" th:each="paginationNumber : ${paginationNumbers}">
+                            <a class="page-link"
+                               th:class="'page-link ' + (${boards.number} == ${paginationNumber} ? 'disabled text-bg-secondary' : '')"
+                               th:text="${paginationNumber + 1}"
+                               th:href="@{/boards(page=${paginationNumber})}">1</a>
+                        </li>
+                        <li class="page-item" th:if="${boards.number} < ${boards.totalPages - 1}">
+                            <a class="page-link"
+                               th:href="@{/boards(page=${boards.number + 1})}">&gt;</a>
+                        </li>
+                        <li class="page-item" th:if="${boards.number} < ${boards.totalPages - 1}">
+                            <a class="page-link"
+                               th:href="@{/boards(page=${boards.totalPages - 1})}">&gt;&gt;</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
