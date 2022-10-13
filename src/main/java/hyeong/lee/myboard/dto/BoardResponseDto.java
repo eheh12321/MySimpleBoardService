@@ -16,6 +16,7 @@ public class BoardResponseDto {
     private final String editor;
     private final String content;
     private final LocalDateTime createdAt;
+    private final Integer replyCount;
 
     public static BoardResponseDto from(Board board) {
         return BoardResponseDto.builder()
@@ -23,6 +24,7 @@ public class BoardResponseDto {
                 .title(board.getTitle())
                 .editor(board.getEditor())
                 .content(board.getContent())
-                .createdAt(board.getCreatedAt()).build();
+                .createdAt(board.getCreatedAt())
+                .replyCount(board.getReplies().size()).build();
     }
 }

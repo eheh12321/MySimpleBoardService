@@ -76,6 +76,7 @@
                             searchValue=${param.searchValue}
                             )}">작성 시각</a>
                         </th>
+                        <th>댓글 수</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -88,6 +89,7 @@
                         <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}">yyyy-MM-dd
                             HH:mm:ss
                         </td>
+                        <td th:text="${board.replyCount}">댓글 수</td>
                     </tr>
                     </tbody>
                 </table>
