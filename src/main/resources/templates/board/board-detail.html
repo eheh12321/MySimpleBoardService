@@ -22,8 +22,8 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">작성 시각</span>
-                    <input type="text" class="form-control" id="createdDate"
-                           th:value="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}" disabled>
+                    <input type="text" class="form-control" id="createdAt"
+                           th:value="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}" disabled>
                 </div>
                 <div class="input-group">
                     <span class="input-group-text">본문</span>

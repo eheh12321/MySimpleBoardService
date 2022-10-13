@@ -19,13 +19,33 @@
                     </div>
                 </div>
                 <hr>
-                <table class="table mb-5">
+                <table class="table table-hover mb-5">
                     <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>작성 시각</th>
+                    <tr class="table-secondary">
+                        <th>
+                            <a class="text-dark text-decoration-none" th:href="@{/boards(
+                            page=${boards.number},
+                            sort='id' + (${boards.sort.getOrderFor('id')} != null ? (${boards.sort.getOrderFor('id').direction.name} == 'DESC' ? '' : ',desc') : '')
+                            )}">#</a>
+                        </th>
+                        <th>
+                            <a class="text-dark text-decoration-none" th:href="@{/boards(
+                            page=${boards.number},
+                            sort='title' + (${boards.sort.getOrderFor('title')} != null ? (${boards.sort.getOrderFor('title').direction.name} == 'DESC' ? '' : ',desc') : '')
+                            )}">제목</a>
+                        </th>
+                        <th>
+                            <a class="text-dark text-decoration-none" th:href="@{/boards(
+                            page=${boards.number},
+                            sort='editor' + (${boards.sort.getOrderFor('editor')} != null ? (${boards.sort.getOrderFor('editor').direction.name} == 'DESC' ? '' : ',desc') : '')
+                            )}">작성자</a>
+                        </th>
+                        <th>
+                            <a class="text-dark text-decoration-none" th:href="@{/boards(
+                            page=${boards.number},
+                            sort='createdAt' + (${boards.sort.getOrderFor('createdAt')} != null ? (${boards.sort.getOrderFor('createdAt').direction.name} == 'DESC' ? '' : ',desc') : '')
+                            )}">작성 시각</a>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -35,7 +55,7 @@
                             <a th:text="${board.title}" th:href="@{/boards/{boardId}(boardId=${board.id})}">제목</a>
                         </td>
                         <td th:text="${board.editor}">작성자</td>
-                        <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}">yyyy-MM-dd
+                        <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}">yyyy-MM-dd
                             HH:mm:ss
                         </td>
                     </tr>
@@ -45,27 +65,27 @@
                     <ul class="pagination justify-content-center">
                         <li class="page-item" th:if="${boards.number} != 0">
                             <a class="page-link"
-                               th:href="@{/boards(page=0)}"
+                               th:href="@{/boards(page=0,sort=${param.sort})}"
                             >&lt;&lt;</a>
                         </li>
                         <li class="page-item" th:if="${boards.number} != 0">
                             <a class="page-link"
-                               th:href="@{/boards(page=${boards.number - 1})}"
+                               th:href="@{/boards(page=${boards.number - 1},sort=${param.sort})}"
                             >&lt;</a>
                         </li>
                         <li class="page-item" th:each="paginationNumber : ${paginationNumbers}">
                             <a class="page-link"
                                th:class="'page-link ' + (${boards.number} == ${paginationNumber} ? 'disabled text-bg-secondary' : '')"
                                th:text="${paginationNumber + 1}"
-                               th:href="@{/boards(page=${paginationNumber})}">1</a>
+                               th:href="@{/boards(page=${paginationNumber},sort=${param.sort})}">1</a>
                         </li>
                         <li class="page-item" th:if="${boards.number} < ${boards.totalPages - 1}">
                             <a class="page-link"
-                               th:href="@{/boards(page=${boards.number + 1})}">&gt;</a>
+                               th:href="@{/boards(page=${boards.number + 1},sort=${param.sort})}">&gt;</a>
                         </li>
                         <li class="page-item" th:if="${boards.number} < ${boards.totalPages - 1}">
                             <a class="page-link"
-                               th:href="@{/boards(page=${boards.totalPages - 1})}">&gt;&gt;</a>
+                               th:href="@{/boards(page=${boards.totalPages - 1},sort=${param.sort})}">&gt;&gt;</a>
                         </li>
                     </ul>
                 </nav>
