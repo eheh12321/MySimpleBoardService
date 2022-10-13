@@ -2,6 +2,7 @@ package hyeong.lee.myboard.controller;
 
 import hyeong.lee.myboard.domain.type.SearchType;
 import hyeong.lee.myboard.dto.BoardResponseDto;
+import hyeong.lee.myboard.dto.BoardWithRepliesResponseDto;
 import hyeong.lee.myboard.service.BoardService;
 import hyeong.lee.myboard.service.PagingService;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +52,9 @@ public class BoardController {
 
     @GetMapping("/{boardId}")
     public String boardDetail(@PathVariable Long boardId, Model model) {
-        BoardResponseDto dto = boardService.readById(boardId);
+        BoardWithRepliesResponseDto dto = boardService.readWithRepliesById(boardId);
         model.addAttribute("board", dto);
+        model.addAttribute("replies", dto.getReplies());
 
         return "board/board-detail";
     }
