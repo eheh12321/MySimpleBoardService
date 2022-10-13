@@ -4,6 +4,7 @@ import hyeong.lee.myboard.dto.BoardResponseDto;
 import hyeong.lee.myboard.service.BoardService;
 import hyeong.lee.myboard.service.PagingService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/boards")
 @Controller
@@ -28,7 +30,7 @@ public class BoardController {
     public String index(@PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
                         Model model) {
         Page<BoardResponseDto> boards = boardService.readAll(pageable);
-        List<Integer> paginationNumbers = pagingService.getPaginationNumbers(boards.getPageable());
+        List<Integer> paginationNumbers = pagingService.getPaginationNumbers(pageable.getPageNumber(), boards.getTotalPages());
 
         model.addAttribute("boards", boards);
         model.addAttribute("paginationNumbers", paginationNumbers);
