@@ -19,10 +19,12 @@ public class BoardResponseDto {
     private final Integer replyCount;
 
     public static BoardResponseDto from(Board board) {
+        String editorNickname = board.getUserAccount() == null ? board.getEditor() : board.getUserAccount().getNickname();
+
         return BoardResponseDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
-                .editor(board.getEditor())
+                .editor(editorNickname)
                 .content(board.getContent())
                 .createdAt(board.getCreatedAt())
                 .replyCount(board.getReplies().size()).build();

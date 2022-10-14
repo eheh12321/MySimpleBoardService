@@ -23,8 +23,10 @@ public class BoardPrincipal implements UserDetails {
     private final String memo;
 
     public static BoardPrincipal of(String username, String password, String email, String nickname, String memo) {
+        
+        // TODO: 로그인 사용자 별 권한 분리
         Set<RoleType> roleTypes = Set.of(RoleType.USER);
-
+        
         return BoardPrincipal.builder()
                 .username(username)
                 .password(password)
@@ -36,6 +38,15 @@ public class BoardPrincipal implements UserDetails {
                 .nickname(nickname)
                 .memo(memo)
                 .build();
+    }
+
+    public UserAccountDto toDto() {
+        return UserAccountDto.builder()
+                .userId(username)
+                .password(password)
+                .email(email)
+                .nickname(nickname)
+                .memo(memo).build();
     }
 
     public static BoardPrincipal from(UserAccountDto dto) {

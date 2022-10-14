@@ -26,4 +26,13 @@ public class UserAccountDto {
                 .nickname(entity.getNickname())
                 .memo(entity.getMemo()).build();
     }
+
+    public UserAccount toEntity() {
+        return UserAccount.builder()
+                .userId(userId)
+                .userPassword(password)
+                .email(email)
+                .nickname(nickname)
+                .memo(memo).build();
+    }
 }
