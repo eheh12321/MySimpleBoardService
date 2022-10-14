@@ -28,7 +28,7 @@ public class BoardApiController {
 
         if(boardPrincipal != null) {
             UserAccountDto userAccountDto = boardPrincipal.toDto();
-            dto.setEditor(userAccountDto.getUserId());
+            dto.setEditor(userAccountDto.getNickname());
             dto.setUserAccountDto(userAccountDto);
         }
         Long boardId = boardService.create(dto);

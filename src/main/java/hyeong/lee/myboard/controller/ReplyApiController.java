@@ -25,7 +25,7 @@ public class ReplyApiController {
 
         if(boardPrincipal != null) {
             UserAccountDto userAccountDto = boardPrincipal.toDto();
-            dto.setEditor(userAccountDto.getUserId());
+            dto.setEditor(userAccountDto.getNickname());
             dto.setUserAccountDto(userAccountDto);
         }
         Long replyId = replyService.create(dto);

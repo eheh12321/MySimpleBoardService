@@ -49,7 +49,7 @@
                 <hr>
                 <div class="col-md-6 mb-3" th:each="reply : ${replies}">
                     <div class="h-100 p-3 rounded-3"
-                         th:class="'h-100 p-3 rounded-3 ' + (${reply.isRegisteredUser} ? 'text-bg-success' : 'text-bg-dark')">
+                         th:class="'h-100 p-3 rounded-3 ' + (${reply.isRegisteredUser} ? 'text-bg-primary' : 'text-bg-dark')">
                         <!-- 비회원이 작성했거나 or "현재 비로그인 상태가 아니면서" 댓글 작성자의 userId == 현재 로그인 id인 경우 -->
                         <a class="btn btn-danger float-end" type="button"
                            th:if="${reply.replyUserAccount == null} or (
@@ -58,7 +58,7 @@
                         <p class="fs-3 fw-bold"
                            th:text="${reply.editor}"></p>
                         <p th:text="${reply.content}"></p>
-                        <p class="text-end text-secondary"
+                        <p class="text-end"
                            th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
                     </div>
                 </div>
