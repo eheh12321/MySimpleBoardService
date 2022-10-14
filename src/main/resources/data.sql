@@ -308,7 +308,6 @@ insert into BOARD (title, editor, content, created_at) values ('Future-proofed e
 
 Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero.', '2022-03-21 18:11:52');
 
-################
 
 insert into REPLY (editor, content, board_id, created_at) values ('Charyl', 'Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.', 52, '2021-11-03 23:52:53');
 insert into REPLY (editor, content, board_id, created_at) values ('Sheffy', 'Sed ante. Vivamus tortor. Duis mattis egestas metus.', 92, '2022-01-06 12:05:57');
@@ -360,3 +359,7 @@ insert into REPLY (editor, content, board_id, created_at) values ('Xavier', 'In 
 insert into REPLY (editor, content, board_id, created_at) values ('Sela', 'Morbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.', 86, '2022-09-12 06:00:06');
 insert into REPLY (editor, content, board_id, created_at) values ('Roslyn', 'Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.', 71, '2022-03-12 22:43:46');
 insert into REPLY (editor, content, board_id, created_at) values ('Janine', 'Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.', 47, '2022-01-08 15:12:54');
+
+
+insert into USER_ACCOUNT (user_id, user_password, email, nickname, memo) values ('admin', '{noop}admin', 'email@com', '관리자', '관리자 메모');
+insert into USER_ACCOUNT (user_id, user_password, email, nickname, memo) values ('user', '{noop}user', 'email@co.kr', '일반 사용자', '사용자 메모');

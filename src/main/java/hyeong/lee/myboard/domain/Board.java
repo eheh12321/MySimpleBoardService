@@ -28,6 +28,9 @@ public class Board extends AuditingFields {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Reply> replies = new ArrayList<>();
 
+    @ManyToOne
+    private UserAccount userAccount;
+
     public void updateContent(String title, String content) {
         this.title = title;
         this.content = content;

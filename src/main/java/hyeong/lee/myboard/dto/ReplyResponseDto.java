@@ -14,12 +14,22 @@ public class ReplyResponseDto {
     private final String editor;
     private final String content;
     private final LocalDateTime createdAt;
+    private final UserAccountResponseDto replyUserAccount;
+    private final boolean isRegisteredUser; // 익명 사용자 유무
 
     public static ReplyResponseDto from(Reply reply) {
+        String replyEditorNickname = reply.getUserAccount() == null ? reply.getEditor() : reply.getUserAccount().getNickname();
+        UserAccountResponseDto userAccountResponseDto =
+                reply.getUserAccount() == null ? null : UserAccountResponseDto.from(reply.getUserAccount());
+        boolean isRegisteredUser = reply.getUserAccount() != null;
+
         return ReplyResponseDto.builder()
                 .id(reply.getId())
-                .editor(reply.getEditor())
+                .editor(replyEditorNickname)
                 .content(reply.getContent())
-                .createdAt(reply.getCreatedAt()).build();
+                .createdAt(reply.getCreatedAt())
+                .replyUserAccount(userAccountResponseDto)
+                .isRegisteredUser(isRegisteredUser)
+                .build();
     }
 }
