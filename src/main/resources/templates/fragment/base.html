@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="default_header(title, links)">
     <meta charset="UTF-8">
@@ -36,7 +36,8 @@
             </form>
 
             <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2">Login</button>
+                <a href="/login" sec:authorize="!isAuthenticated()" type="button" class="btn btn-outline-light me-2">Login</a>
+                <a href="/logout" sec:authorize="isAuthenticated()" type="button" class="btn btn-outline-light me-2">Logout</a>
                 <button type="button" class="btn btn-warning">Sign-up</button>
             </div>
         </div>
