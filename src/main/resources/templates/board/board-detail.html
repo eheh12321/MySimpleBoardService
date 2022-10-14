@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
     <title>게시글 상세</title>
     <link/>
@@ -18,7 +20,9 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">작성자</span>
-                    <input type="text" class="form-control" id="editor" th:value="${board.editor}" disabled>
+                    <input type="text" class="form-control" id="editor"
+                           th:value="${board.userAccount == null} ? ${board.editor} : ${board.userAccount.nickname}"
+                           disabled>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">작성 시각</span>
@@ -31,11 +35,13 @@
                 </div>
                 <hr>
                 <a class="btn btn-secondary" type="button" href="/boards">뒤로가기</a>
+                <!-- 비회원이 작성했거나 or "익명이 아니면서" 게시글 작성자의 userId == 현재 로그인 id인 경우 -->
                 <a class="btn btn-warning float-end" type="button" href="/boards"
-                   th:if="${board.editor == #authentication.name}"
+                   th:if="${board.userAccount == null} or (
+                   ${#authorization.expression('!isAnonymous()')} and ${board.userAccount?.userId == #authentication.name})"
                    th:onclick="'delete_board(' + ${board.id} + ');'">삭제</a>
                 <a class="btn btn-success float-end me-2" type="button"
-                   th:if="${board.editor == #authentication.name}"
+                   th:if="${#authorization.expression('!isAnonymous()')} and ${board.userAccount?.userId == #authentication.name}"
                    th:href="@{/boards/edit/{boardId}(boardId=${board.id})}">수정</a>
 
                 <hr>
@@ -54,10 +60,9 @@
                 </div>
                 <hr>
                 <form>
-                    <div class="mb-3">
+                    <div class="mb-3" sec:authorize="!isAuthenticated()">
                         <label for="replyEditor" class="form-label">작성자</label>
-                        <input type="text" th:value="${#authentication.name}" disabled
-                               class="form-control" id="replyEditor" placeholder="닉네임을 입력하세요...">
+                        <input type="text" class="form-control" id="replyEditor" placeholder="닉네임을 입력하세요...">
                     </div>
                     <div class="mb-3">
                         <label for="replyContent" class="form-label">본문</label>

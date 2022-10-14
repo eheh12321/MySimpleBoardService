@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
     <title>게시글 등록</title>
     <link/>
@@ -17,9 +19,9 @@
                         <span class="input-group-text">제목</span>
                         <input type="text" class="form-control" id="title" name="title">
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-3" sec:authorize="!isAuthenticated()">
                         <span class="input-group-text">작성자</span>
-                        <input type="text" class="form-control" id="editor" name="editor" th:value="${#authentication.name}" disabled>
+                        <input type="text" class="form-control" id="editor" name="editor">
                     </div>
                     <div class="input-group">
                         <span class="input-group-text">본문</span>
