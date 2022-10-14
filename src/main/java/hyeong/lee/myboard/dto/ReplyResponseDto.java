@@ -14,12 +14,19 @@ public class ReplyResponseDto {
     private final String editor;
     private final String content;
     private final LocalDateTime createdAt;
+    private final UserAccountResponseDto replyUserAccount;
 
     public static ReplyResponseDto from(Reply reply) {
+        String replyEditorNickname = reply.getUserAccount() == null ? reply.getEditor() : reply.getUserAccount().getNickname();
+        UserAccountResponseDto userAccountResponseDto =
+                reply.getUserAccount() == null ? null : UserAccountResponseDto.from(reply.getUserAccount());
+
         return ReplyResponseDto.builder()
                 .id(reply.getId())
-                .editor(reply.getEditor())
+                .editor(replyEditorNickname)
                 .content(reply.getContent())
-                .createdAt(reply.getCreatedAt()).build();
+                .createdAt(reply.getCreatedAt())
+                .replyUserAccount(userAccountResponseDto)
+                .build();
     }
 }

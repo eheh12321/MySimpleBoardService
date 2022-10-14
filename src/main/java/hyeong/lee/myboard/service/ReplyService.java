@@ -2,14 +2,17 @@ package hyeong.lee.myboard.service;
 
 import hyeong.lee.myboard.domain.Board;
 import hyeong.lee.myboard.domain.Reply;
+import hyeong.lee.myboard.domain.UserAccount;
 import hyeong.lee.myboard.dto.ReplyRequestDto;
 import hyeong.lee.myboard.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -25,8 +28,21 @@ public class ReplyService {
         return savedReply.getId();
     }
 
-    public void delete(Long replyId) {
-        replyRepository.delete(findById(replyId));
+    public void delete(Long replyId, UserAccount userAccount) {
+        Reply reply = findById(replyId);
+
+        // 익명 회원이 작성한 댓글은 일단 모두 삭제 가능
+        if(reply.getUserAccount() == null) {
+            replyRepository.delete(reply);
+            return;
+        }
+
+        // 작성자 정보와 일치하는 경우에만 삭제 가능
+        if(reply.getUserAccount().equals(userAccount)) {
+            replyRepository.delete(reply);
+        } else {
+            log.error(">> 사용자 정보가 일치하지 않습니다");
+        }
     }
 
     @Transactional(readOnly = true)

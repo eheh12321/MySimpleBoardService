@@ -35,7 +35,7 @@
                 </div>
                 <hr>
                 <a class="btn btn-secondary" type="button" href="/boards">뒤로가기</a>
-                <!-- 비회원이 작성했거나 or "익명이 아니면서" 게시글 작성자의 userId == 현재 로그인 id인 경우 -->
+                <!-- 비회원이 작성했거나 or "현재 비로그인 상태가 아니면서" 게시글 작성자의 userId == 현재 로그인 id인 경우 -->
                 <a class="btn btn-warning float-end" type="button" href="/boards"
                    th:if="${board.userAccount == null} or (
                    ${#authorization.expression('!isAnonymous()')} and ${board.userAccount?.userId == #authentication.name})"
@@ -49,8 +49,10 @@
                 <hr>
                 <div class="col-md-6 mb-3" th:each="reply : ${replies}">
                     <div class="h-100 p-3 text-bg-dark rounded-3">
+                        <!-- 비회원이 작성했거나 or "현재 비로그인 상태가 아니면서" 댓글 작성자의 userId == 현재 로그인 id인 경우 -->
                         <a class="btn btn-danger float-end" type="button"
-                            th:if="${reply.editor == #authentication.name}"
+                            th:if="${reply.replyUserAccount == null} or (
+                            ${#authorization.expression('!isAnonymous()')} and ${reply.replyUserAccount?.userId == #authentication.name})"
                             th:onclick="'delete_reply(' + ${reply.id} + ');'">삭제</a>
                         <p class="fs-3 fw-bold" th:text="${reply.editor}"></p>
                         <p th:text="${reply.content}"></p>

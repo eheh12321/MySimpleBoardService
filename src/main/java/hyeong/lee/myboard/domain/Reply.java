@@ -23,7 +23,6 @@ public class Reply extends AuditingFields {
     @ManyToOne(optional = false)
     private Board board;
 
-    public void updateReply(String content) {
-        this.content = content;
-    }
+    @ManyToOne
+    private UserAccount userAccount;
 }
