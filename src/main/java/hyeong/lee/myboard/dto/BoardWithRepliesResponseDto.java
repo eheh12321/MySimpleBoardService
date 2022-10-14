@@ -18,8 +18,12 @@ public class BoardWithRepliesResponseDto {
     private final String content;
     private final LocalDateTime createdAt;
     private final List<ReplyResponseDto> replies;
+    private final UserAccountResponseDto userAccount;
 
     public static BoardWithRepliesResponseDto from(Board board) {
+        UserAccountResponseDto userAccountResponseDto =
+                board.getUserAccount() == null ? null : UserAccountResponseDto.from(board.getUserAccount());
+
         return BoardWithRepliesResponseDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
@@ -27,6 +31,7 @@ public class BoardWithRepliesResponseDto {
                 .content(board.getContent())
                 .createdAt(board.getCreatedAt())
                 .replies(board.getReplies().stream().map(ReplyResponseDto::from).collect(Collectors.toList()))
+                .userAccount(userAccountResponseDto)
                 .build();
     }
 }
