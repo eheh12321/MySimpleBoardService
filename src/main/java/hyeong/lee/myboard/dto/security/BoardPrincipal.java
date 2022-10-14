@@ -1,5 +1,6 @@
 package hyeong.lee.myboard.dto.security;
 
+import hyeong.lee.myboard.domain.UserAccount;
 import hyeong.lee.myboard.dto.UserAccountDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +45,15 @@ public class BoardPrincipal implements UserDetails {
         return UserAccountDto.builder()
                 .userId(username)
                 .password(password)
+                .email(email)
+                .nickname(nickname)
+                .memo(memo).build();
+    }
+
+    public UserAccount toEntity() {
+        return UserAccount.builder()
+                .userId(username)
+                .userPassword(password)
                 .email(email)
                 .nickname(nickname)
                 .memo(memo).build();
