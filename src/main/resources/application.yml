@@ -12,11 +12,17 @@ spring:
     username: hyeong
     password: thisisTESTpw!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 5MB # 개별 파일의 최대 사이즈
+      max-request-size: 30MB # 한꺼번에 보낼 수 있는 최대 사이즈
   jpa:
     show-sql: true # hibernate가 DB에 날리는 모든 쿼리를 보여주세요
-    hibernate.ddl-auto: create # 실행 시 테이블을 모두 drop 이후 새로 create
+    hibernate.ddl-auto: update # 실행 시 테이블을 모두 drop 이후 새로 create
     defer-datasource-initialization: true # 테스트용 데이터를 미리 설정,이용할 수 있다 (data.sql 내)
     properties: # JPA 구현체(Hibernate)에 종속된 설정
       hibernate.format_sql: true  # SQL을 보기좋게 포매팅 해주세요
       hibernate.default_batch_fetch_size: 100 # 여러 쿼리를 한방에 벌크로 긁어오도록 해주세요 (N+1문제 관련)
-  sql.init.mode: always  # 테스트용 데이터는 언제 사용할 것인지? (data.sql)
+  sql.init.mode: never  # 테스트용 데이터는 언제 사용할 것인지? (data.sql)
+  mvc:
+    static-path-pattern: /resources/** # 정적 리소스에 접근할 때는 항상 아래 경로로 요청
