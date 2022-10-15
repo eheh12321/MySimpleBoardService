@@ -22,6 +22,8 @@ function create_board() {
             alert("전체 파일의 크기가 30MB를 초과할 수 없습니다"); return;
         }
 
+        $(".field-error").text(""); // 미리 Error 필드 초기화
+
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
@@ -35,7 +37,7 @@ function create_board() {
                 window.location.replace('/boards/' + data);
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                markingErrorField(e);
             }
         });
     }
@@ -45,8 +47,10 @@ function update_board(boardId) {
     if (confirm("수정하시겠습니까?")) {
         const board_update_data = {
             title: $("#title").val(),
+            editor: $("#editor").val(),
             content: $("#content").val()
         };
+        $(".field-error").text(""); // 미리 Error 필드 초기화
 
         $.ajax({
             type: 'PATCH',
@@ -58,7 +62,7 @@ function update_board(boardId) {
                 window.location.replace('/boards/' + boardId);
             },
             error: function (result) {
-                alert("수정에 실패했습니다");
+                markingErrorField(result);
             }
         })
     }
@@ -85,6 +89,7 @@ function add_reply(boardId) {
         editor: $("#replyEditor").val(),
         content: $("#replyContent").val()
     }
+    $(".field-error").text(""); // 미리 Error 필드 초기화
 
     $.ajax({
         type: 'POST',
@@ -96,7 +101,7 @@ function add_reply(boardId) {
             window.location.replace('/boards/' + boardId);
         },
         error: function(result) {
-            alert("등록에 실패했습니다");
+            markingErrorField(result);
         }
     });
 }
@@ -113,5 +118,19 @@ function delete_reply(replyId) {
                 alert("삭제에 실패했습니다");
             }
         })
+    }
+}
+
+function markingErrorField(response) {
+    const errorFields = response.responseJSON.errors;
+    if(!errorFields) {
+        alert(response.response.message);
+        return;
+    }
+
+    var error;
+    for(var i = 0, length = errorFields.length; i < length; i++) {
+        error = errorFields[i];
+        $('#' + error.field + '-field-error').text(error.defaultMessage);
     }
 }

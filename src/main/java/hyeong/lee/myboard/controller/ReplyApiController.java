@@ -11,6 +11,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/replies")
 @RestController
@@ -21,7 +23,7 @@ public class ReplyApiController {
     @PostMapping
     public ResponseEntity<Long> create(
             @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
-            @RequestBody ReplyRequestDto dto) {
+            @Valid @RequestBody ReplyRequestDto dto) {
 
         if(boardPrincipal != null) {
             UserAccountDto userAccountDto = boardPrincipal.toDto();

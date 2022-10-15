@@ -23,7 +23,7 @@ public class UserAccount {
     @Column(nullable = false)
     private String email;
 
-    @Column(length = 30)
+    @Column(length = 15)
     private String nickname;
 
     @Column(columnDefinition = "TEXT")

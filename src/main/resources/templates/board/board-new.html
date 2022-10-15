@@ -15,17 +15,35 @@
                 <h5 class="display-5 fw-bold mb-3">게시글 등록</h5>
                 <hr>
                 <form id="boardCreateForm" enctype="multipart/form-data">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">제목</span>
-                        <input type="text" class="form-control" id="title" name="title">
+
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">제목</span>
+                            <input type="text" class="form-control" id="title" name="title">
+                        </div>
+                        <div class="row">
+                            <p class="field-error text-danger text-end m-0" id="title-field-error"></p>
+                        </div>
                     </div>
-                    <div class="input-group mb-3" sec:authorize="!isAuthenticated()">
-                        <span class="input-group-text">작성자</span>
-                        <input type="text" class="form-control" id="editor" name="editor">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">작성자</span>
+                            <input type="text" class="form-control" id="editor" name="editor"
+                                   th:readonly="${#authorization.expression('!isAnonymous()')}"
+                                   th:value="${#authorization.expression('!isAnonymous()')} ? ${#authentication.principal.nickname} : '익명'">
+                        </div>
+                        <div class="row">
+                            <p class="field-error text-danger text-end m-0" id="editor-field-error"></p>
+                        </div>
                     </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">본문</span>
-                        <textarea class="form-control" rows="10" id="content" name="content"></textarea>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">본문</span>
+                            <textarea class="form-control" rows="10" id="content" name="content"></textarea>
+                        </div>
+                        <div class="row">
+                            <p class="field-error text-danger text-end m-0" id="content-field-error"></p>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <input class="form-control" type="file" id="files" name="files" multiple>

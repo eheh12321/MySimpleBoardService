@@ -13,13 +13,25 @@
                 <h5 class="display-5 fw-bold mb-3">게시글 수정</h5>
                 <hr>
                 <form>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">제목</span>
-                        <input type="text" class="form-control" id="title" th:field="${board.title}">
+                    <!-- 작성자 수정 진행하지 않지만 검증 통과를 위해 같이 보내는 용도 -->
+                    <input type="hidden" class="form-control" id="editor" name="editor" th:value="${#authentication.principal.nickname}">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">제목</span>
+                            <input type="text" class="form-control" id="title" th:field="${board.title}">
+                        </div>
+                        <div class="row">
+                            <p class="field-error text-danger text-end m-0" id="title-field-error"></p>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <span class="input-group-text">본문</span>
-                        <textarea class="form-control" rows="10" id="content" th:field="${board.content}"></textarea>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">본문</span>
+                            <textarea class="form-control" rows="10" id="content" th:field="${board.content}"></textarea>
+                        </div>
+                        <div class="row">
+                            <p class="field-error text-danger text-end m-0" id="content-field-error"></p>
+                        </div>
                     </div>
                     <hr>
                     <a class="btn btn-secondary" type="button" href="/boards">뒤로가기</a>
