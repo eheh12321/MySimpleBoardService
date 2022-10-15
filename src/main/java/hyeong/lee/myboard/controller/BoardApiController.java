@@ -24,14 +24,17 @@ public class BoardApiController {
     @PostMapping
     public ResponseEntity<Long> create(
             @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
-            @RequestBody BoardRequestDto dto) {
+            BoardRequestDto dto) {
 
+        // 회원이 작성한 경우 계정 정보 삽입
         if(boardPrincipal != null) {
             UserAccountDto userAccountDto = boardPrincipal.toDto();
             dto.setEditor(userAccountDto.getNickname());
             dto.setUserAccountDto(userAccountDto);
         }
+        // 게시글 저장
         Long boardId = boardService.create(dto);
+
         return ResponseEntity.ok(boardId);
     }
 

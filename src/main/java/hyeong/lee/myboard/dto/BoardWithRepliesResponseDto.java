@@ -19,6 +19,7 @@ public class BoardWithRepliesResponseDto {
     private final LocalDateTime createdAt;
     private final List<ReplyResponseDto> replies;
     private final UserAccountResponseDto userAccount;
+    private final List<UploadFileResponseDto> uploadFiles;
 
     public static BoardWithRepliesResponseDto from(Board board) {
         UserAccountResponseDto userAccountResponseDto =
@@ -31,6 +32,7 @@ public class BoardWithRepliesResponseDto {
                 .content(board.getContent())
                 .createdAt(board.getCreatedAt())
                 .replies(board.getReplies().stream().map(ReplyResponseDto::from).collect(Collectors.toList()))
+                .uploadFiles(board.getUploadFiles().stream().map(UploadFileResponseDto::from).collect(Collectors.toList()))
                 .userAccount(userAccountResponseDto)
                 .build();
     }
