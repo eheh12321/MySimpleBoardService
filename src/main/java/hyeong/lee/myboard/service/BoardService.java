@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ import javax.persistence.EntityNotFoundException;
 @Service
 public class BoardService {
 
+    private final FileService fileService;
     private final BoardRepository boardRepository;
     private final UserAccountRepository userAccountRepository;
 
@@ -59,6 +61,14 @@ public class BoardService {
     public Long create(BoardRequestDto dto) {
         Board board = dto.toEntity();
         Board savedBoard = boardRepository.save(board);
+        try {
+            // 첨부파일이 있는경우 저장
+            if(dto.getFiles() != null) {
+                fileService.saveFile(board, dto.getFiles());
+            }
+        } catch (IOException e) {
+            log.error(">> 파일 저장에 실패했습니다.");
+        }
         return savedBoard.getId();
     }
 

@@ -1,23 +1,41 @@
 function create_board() {
-    if (confirm("등록하시겠습니까?")) {
-        const board_data = {
-            title: $("#title").val(),
-            editor: $("#editor").val(),
-            content: $("#content").val()
-        };
+
+    if(confirm("등록하시겠습니까?")) {
+        var form = $("#boardCreateForm")[0];
+        var totalFileSize = 0;
+        var maxFileSize = 1024 * 1024 * 30; // 30MB
+        var regex = new RegExp("(.*?)\.(exe|zip|sh)$"); // 확장자 검사
+        var formData = new FormData(form);
+        var inputFiles = formData.getAll("files");
+
+        for(var i = 0; i < inputFiles.length; i++) {
+            if(inputFiles[i].size >= 1024 * 1024 * 5) {
+                alert("개별 파일의 크기가 5MB를 초과할 수 없습니다"); return;
+            }
+            if(regex.test(inputFiles[i].name)) {
+                alert("해당 확장자는 업로드할 수 없습니다."); return;
+            }
+            totalFileSize += inputFiles[i].size;
+        }
+
+        if(maxFileSize <= totalFileSize) {
+            alert("전체 파일의 크기가 30MB를 초과할 수 없습니다"); return;
+        }
 
         $.ajax({
-            type: 'POST',
-            url: '/api/boards',
-            datatype: 'JSON',
-            data: JSON.stringify(board_data),
-            contentType: 'application/json; charset=utf-8',
-            success: function (result) {
-                alert("게시글이 등록되었습니다");
-                window.location.replace('/boards/' + result);
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/api/boards",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                window.location.replace('/boards/' + data);
             },
-            error: function(result) {
-                alert("등록에 실패했습니다");
+            error: function (e) {
+                console.log("ERROR : ", e);
             }
         });
     }
