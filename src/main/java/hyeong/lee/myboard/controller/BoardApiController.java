@@ -12,7 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class BoardApiController {
     @PostMapping
     public ResponseEntity<Long> create(
             @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
-            BoardRequestDto dto) {
+            @Valid BoardRequestDto dto) {
 
         // 회원이 작성한 경우 계정 정보 삽입
         if(boardPrincipal != null) {
@@ -42,7 +43,7 @@ public class BoardApiController {
     @PatchMapping("/{boardId}")
     public ResponseEntity<Long> update(@PathVariable Long boardId,
                                        @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
-                                       @RequestBody BoardRequestDto dto) {
+                                       @Valid @RequestBody BoardRequestDto dto) {
 
         if(boardPrincipal == null) { // 비로그인 상태라면 글 수정 불가
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(boardId);

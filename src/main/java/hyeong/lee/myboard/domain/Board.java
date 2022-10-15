@@ -16,10 +16,10 @@ public class Board extends AuditingFields {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 50, nullable = false)
     private String title;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 15, nullable = false)
     private String editor;
 
     @Column(columnDefinition = "TEXT", nullable = false)
