@@ -57,8 +57,10 @@
                 <h5 class="display-5 fw-bold mb-3">댓글 목록</h5>
                 <hr>
                 <div class="col-md-6 mb-3" th:each="reply : ${replies}">
+                    <!-- -->
                     <div class="h-100 p-3 rounded-3"
-                         th:class="'h-100 p-3 rounded-3 ' + (${reply.isRegisteredUser} ? 'text-bg-primary' : 'text-bg-dark')">
+                         th:class="'h-100 p-3 rounded-3 ' +
+                         (${reply.isRegisteredUser} ? (${board.userAccount?.nickname == reply.replyUserAccount?.nickname} ? 'text-bg-primary' : 'text-bg-success') : 'text-bg-dark')">
                         <!-- 비회원이 작성했거나 or "현재 비로그인 상태가 아니면서" 댓글 작성자의 userId == 현재 로그인 id인 경우 -->
                         <a class="btn btn-danger float-end" type="button"
                            th:if="${reply.replyUserAccount == null} or (
@@ -73,16 +75,27 @@
                 </div>
                 <hr>
                 <form>
-                    <div class="mb-3" sec:authorize="!isAuthenticated()">
-                        <label for="replyEditor" class="form-label">작성자</label>
-                        <input type="text" class="form-control" id="replyEditor" placeholder="닉네임을 입력하세요...">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">작성자</span>
+                            <input type="text" class="form-control" id="replyEditor" placeholder="닉네임을 입력하세요..."
+                                   th:readonly="${#authorization.expression('!isAnonymous()')}"
+                                   th:value="${#authorization.expression('!isAnonymous()')} ? ${#authentication.principal.nickname} : '익명'">
+                        </div>
+                        <div class="row">
+                            <p class="field-error text-danger text-end m-0" id="editor-field-error"></p>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="replyContent" class="form-label">본문</label>
-                        <textarea class="form-control" id="replyContent" rows="3" placeholder="댓글을 입력하세요..."></textarea>
+                        <div class="input-group">
+                            <span class="input-group-text">본문</span>
+                            <textarea class="form-control" id="replyContent" rows="3" placeholder="댓글을 입력하세요..."></textarea>
+                        </div>
+                        <div class="row">
+                            <p class="field-error text-danger text-end m-0" id="content-field-error"></p>
+                        </div>
                     </div>
-                    <a class="btn btn-primary float-end me-2" type="button"
-                       th:onclick="'add_reply(' + ${board.id} + ');'">등록</a>
+                    <a class="btn btn-primary float-end" type="button" th:onclick="'add_reply(' + ${board.id} + ');'">등록</a>
                 </form>
             </div>
         </div>
