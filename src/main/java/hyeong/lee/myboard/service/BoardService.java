@@ -62,8 +62,8 @@ public class BoardService {
         Board board = dto.toEntity();
         Board savedBoard = boardRepository.save(board);
         try {
-            // 첨부파일이 있는경우 저장
-            if(dto.getFiles() != null) {
+            // 첨부파일이 있는경우 저장 (첨부파일이 없는 경우 NULL이 오는 것이 아니라 길이 1짜리 빈배열이 전달됨)
+            if(!(dto.getFiles().length == 1 && dto.getFiles()[0].isEmpty())) {
                 fileService.saveFile(board, dto.getFiles());
             }
         } catch (IOException e) {
