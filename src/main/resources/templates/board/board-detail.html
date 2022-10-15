@@ -29,9 +29,18 @@
                     <input type="text" class="form-control" id="createdAt"
                            th:value="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}" disabled>
                 </div>
-                <div class="input-group">
+                <div class="input-group mb-3">
                     <span class="input-group-text">본문</span>
                     <textarea class="form-control" rows="10" th:text="${board.content}" disabled></textarea>
+                </div>
+                <div class="list-group list-group-numbered">
+                    <a class="list-group-item"
+                        th:each="file : ${board.uploadFiles}"
+                        th:text="${file.originalFileName}"
+                        th:href="@{${file.filePath} + ${file.uniqueFileName}}"
+                        target="_blank"
+                    >
+                    </a>
                 </div>
                 <hr>
                 <a class="btn btn-secondary" type="button" href="/boards">뒤로가기</a>
@@ -80,7 +89,7 @@
     </div>
 </main>
 <footer th:replace="~{fragment/base::default_footer(~{::script})}">
-    <script src="/js/board-func.js"></script>
+    <script src="/resources/js/board-func.js"></script>
 </footer>
 </body>
 </html>
