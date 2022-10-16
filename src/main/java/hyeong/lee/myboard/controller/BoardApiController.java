@@ -9,6 +9,7 @@ import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ import java.util.List;
 public class BoardApiController {
 
     private final BoardService boardService;
+    private final MessageSource messageSource;
 
     @PostMapping
     @ExceptionHandler
@@ -38,10 +41,10 @@ public class BoardApiController {
             @Valid BoardRequestDto dto, BindingResult bindingResult, HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) { // TODO: 중복 제거하기
-            List<ErrorDetail> fieldErrorList = new ArrayList<>();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                fieldErrorList.add(ErrorDetail.from(fieldError));
-            }
+            List<ErrorDetail> fieldErrorList = bindingResult.getFieldErrors().stream()
+                    .map(error -> ErrorDetail.from(error, messageSource, request.getLocale()))
+                    .collect(Collectors.toList());
+
             ErrorResult errorResult = ErrorResult.builder()
                     .timestamp(LocalDateTime.now())
                     .status(HttpStatus.BAD_REQUEST.value())
@@ -71,10 +74,10 @@ public class BoardApiController {
                                        @Valid @RequestBody BoardRequestDto dto, BindingResult bindingResult, HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
-            List<ErrorDetail> fieldErrorList = new ArrayList<>();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                fieldErrorList.add(ErrorDetail.from(fieldError));
-            }
+            List<ErrorDetail> fieldErrorList = bindingResult.getFieldErrors().stream()
+                    .map(error -> ErrorDetail.from(error, messageSource, request.getLocale()))
+                    .collect(Collectors.toList());
+
             ErrorResult errorResult = ErrorResult.builder()
                     .timestamp(LocalDateTime.now())
                     .status(HttpStatus.BAD_REQUEST.value())

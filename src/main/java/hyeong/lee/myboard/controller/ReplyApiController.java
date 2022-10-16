@@ -8,6 +8,7 @@ import hyeong.lee.myboard.dto.exception.ErrorResult;
 import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.ReplyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/replies")
@@ -28,6 +30,7 @@ import java.util.List;
 public class ReplyApiController {
 
     private final ReplyService replyService;
+    private final MessageSource messageSource;
 
     @PostMapping
     public ResponseEntity<?> create(
@@ -35,10 +38,10 @@ public class ReplyApiController {
             @Valid @RequestBody ReplyRequestDto dto, BindingResult bindingResult, HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
-            List<ErrorDetail> fieldErrorList = new ArrayList<>();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                fieldErrorList.add(ErrorDetail.from(fieldError));
-            }
+            List<ErrorDetail> fieldErrorList = bindingResult.getFieldErrors().stream()
+                    .map(error -> ErrorDetail.from(error, messageSource, request.getLocale()))
+                    .collect(Collectors.toList());
+
             ErrorResult errorResult = ErrorResult.builder()
                     .timestamp(LocalDateTime.now())
                     .status(HttpStatus.BAD_REQUEST.value())
