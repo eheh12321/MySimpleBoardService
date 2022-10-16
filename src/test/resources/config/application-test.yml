@@ -1,0 +1,8 @@
+# 테스트용 설정파일
+
+spring:
+  datasource: # 테스트용 인메모리 DB
+    url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
