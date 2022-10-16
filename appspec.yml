@@ -16,6 +16,6 @@ permissions:
 # CodeDeploy 배포 단계에서 실행할 명령어 지정
 hooks:
   ApplicationStart: # deploy.sh 파일을 ec2-user 권한으로 실행해라 (중단 배포)
-    - location: deploy.sh
+    - location: /scripts/deploy.sh
       timeout: 60
       runas: ec2-user
