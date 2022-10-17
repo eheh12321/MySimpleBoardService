@@ -2,9 +2,9 @@ package hyeong.lee.myboard.service;
 
 import hyeong.lee.myboard.domain.Board;
 import hyeong.lee.myboard.domain.UserAccount;
-import hyeong.lee.myboard.dto.BoardRequestDto;
-import hyeong.lee.myboard.dto.BoardResponseDto;
-import hyeong.lee.myboard.dto.BoardWithRepliesResponseDto;
+import hyeong.lee.myboard.dto.request.BoardRequestDto;
+import hyeong.lee.myboard.dto.response.BoardResponseDto;
+import hyeong.lee.myboard.dto.response.BoardWithRepliesResponseDto;
 import hyeong.lee.myboard.repository.BoardRepository;
 import hyeong.lee.myboard.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;

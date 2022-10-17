@@ -1,6 +1,6 @@
 package hyeong.lee.myboard.config;
 
-import hyeong.lee.myboard.dto.UserAccountDto;
+import hyeong.lee.myboard.dto.request.UserAccountDto;
 import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.repository.UserAccountRepository;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -21,7 +21,7 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .antMatchers("/", "/boards/**", "/api/**", "/resources/**", "/storage/**").permitAll()
+                                .antMatchers("/", "/boards/**", "/api/**", "/resources/**", "/storage/**", "/about/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin()

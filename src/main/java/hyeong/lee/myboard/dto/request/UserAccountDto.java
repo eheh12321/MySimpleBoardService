@@ -1,4 +1,4 @@
-package hyeong.lee.myboard.dto;
+package hyeong.lee.myboard.dto.request;
 
 import hyeong.lee.myboard.domain.UserAccount;
 import lombok.AllArgsConstructor;

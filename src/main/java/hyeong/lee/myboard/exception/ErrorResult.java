@@ -1,4 +1,4 @@
-package hyeong.lee.myboard.dto.exception;
+package hyeong.lee.myboard.exception;
 
 import lombok.Builder;
 import lombok.Data;

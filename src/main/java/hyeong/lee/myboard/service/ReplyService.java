@@ -3,7 +3,7 @@ package hyeong.lee.myboard.service;
 import hyeong.lee.myboard.domain.Board;
 import hyeong.lee.myboard.domain.Reply;
 import hyeong.lee.myboard.domain.UserAccount;
-import hyeong.lee.myboard.dto.ReplyRequestDto;
+import hyeong.lee.myboard.dto.request.ReplyRequestDto;
 import hyeong.lee.myboard.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

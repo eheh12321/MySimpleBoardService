@@ -1,10 +1,10 @@
 package hyeong.lee.myboard.controller;
 
 import hyeong.lee.myboard.domain.UserAccount;
-import hyeong.lee.myboard.dto.BoardRequestDto;
-import hyeong.lee.myboard.dto.UserAccountDto;
-import hyeong.lee.myboard.dto.exception.ErrorDetail;
-import hyeong.lee.myboard.dto.exception.ErrorResult;
+import hyeong.lee.myboard.dto.request.BoardRequestDto;
+import hyeong.lee.myboard.dto.request.UserAccountDto;
+import hyeong.lee.myboard.exception.ErrorDetail;
+import hyeong.lee.myboard.exception.ErrorResult;
 import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

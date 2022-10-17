@@ -1,8 +1,7 @@
-package hyeong.lee.myboard.dto;
+package hyeong.lee.myboard.dto.response;
 
 import hyeong.lee.myboard.domain.Board;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
