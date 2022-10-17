@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
+    <title>이 서비스는...</title>
+    <link/>
+</head>
+<body>
+<header th:replace="~{fragment/base::default_topbar}"></header>
+<main>
+    <div class="container py-4">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container px-4 py-5">
+                <h2 class="pb-2 border-bottom">오류 처리</h2>
+                <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
+                    <div class="d-flex flex-column align-items-start gap-2">
+                        <h3 class="fw-bold">오류 처리에 대해</h3>
+                        <p class="text-muted">예외가 발생했거나 response.sendError()를 통해 예외를 WAS까지 보낸 경우,
+                            WAS가 다시 컨트롤러까지 에러 페이지를 보여주도록 요청을 한다. <br>
+                            (컨트롤러 <-> 인터셉터 <-> 서블릿 <-> 필터 <-> WAS) <br><br>
+                            스프링부트는 개발자가 별도로 설정하지 않아도,
+                            자동으로 만들어진 BasicErrorController가 지정된 폴더 내부에 있는 에러 페이지를 에러 코드에 맞게 호출, 처리해준다</p>
+                    </div>
+                    <div class="row row-cols-1 row-cols-sm-2 g-4">
+                        <div class="d-flex flex-column gap-2">
+                            <h4 class="fw-semibold mb-0">404 오류 페이지</h4>
+                            <a href="/about/error-test-404">
+                                <p class="text-muted">&gt; 테스트</p>
+                            </a>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+                            <h4 class="fw-semibold mb-0">4xx 오류 페이지</h4>
+                            <a href="/about/error-test-4xx">
+                                <p class="text-muted">&gt; 테스트</p>
+                            </a>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+                            <h4 class="fw-semibold mb-0">500 오류 페이지</h4>
+                            <a href="/about/error-test-500">
+                                <p class="text-muted">&gt; 테스트</p>
+                            </a>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+                            <h4 class="fw-semibold mb-0">5xx 페이지</h4>
+                            <a href="/about/error-test-5xx">
+                                <p class="text-muted">&gt; 테스트</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container px-4 py-5">
+                <h2 class="pb-2 border-bottom">API 예외 처리</h2>
+                <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
+                    <div class="d-flex flex-column align-items-start gap-2">
+                        <h3 class="fw-bold">예외에 대한 API 응답</h3>
+                        <p class="text-muted">API 형식으로 응답을 해야할 때 다음과 같이 규격화된 형식을 이용해 응답해주고 있습니다. <br>
+                            입력 폼 검증 과정에서 필드 에러가 발생하면 해당 정보를 ErrorDetail 객체에 담아서 리스트로 모아 전송함으로써
+                            프론트엔드 측에서 어떤 필드가 문제가 있는지를 알 수 있게끔 합니다.
+                        </p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="d-flex flex-column gap-2">
+                            <h4 class="fw-semibold mb-0">ErrorResult</h4>
+                            <pre class="text-bg-secondary p-3">
+@Builder
+@Data
+public class ErrorResult {
+    private String path; // 요쳥 경로
+    private LocalDateTime timestamp; // 에러 발생 시각
+    private int status; // 에러 코드
+    private String error; // 에러명 (ex: Bad Request, Forbidden...)
+    private List&lt;ErrorDetail&gt; errors; // 각 필드 에러 정보
+    private String message; // 에러 메세지
+}
+                            </pre>
+                        </div>
+                        <div class="d-flex flex-column gap-2">
+                            <h4 class="fw-semibold mb-0">ErrorDetail (필드 에러)</h4>
+                            <pre class="text-bg-secondary p-3">
+@Builder
+@Data
+public class ErrorDetail {
+    private String objectName; // 에러가 발생한 객체 이름
+    private String field; // 에러 발생 필드 이름
+    private String code; // 어떤 타입의 에러인지 (ex: Size, NotBlank...)
+    private String message; // 에러 메세지
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container px-4 py-5" hidden>
+                <h2 class="pb-2 border-bottom">예비</h2>
+                <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
+                    <div class="d-flex flex-column align-items-start gap-2">
+                        <h3 class="fw-bold">어떤것에 대해..</h3>
+                        <p class="text-muted">대충 설명</p>
+                    </div>
+                    <div class="row row-cols-1 row-cols-sm-2 g-4">
+                        <div class="d-flex flex-column gap-2">
+                            <h4 class="fw-semibold mb-0">1</h4>
+                        </div>
+                        <div class="d-flex flex-column gap-2">
+                            <h4 class="fw-semibold mb-0">1</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragment/base::default_footer(~{::script})}">
+    <script/>
+</footer>
+</body>
+</html>
