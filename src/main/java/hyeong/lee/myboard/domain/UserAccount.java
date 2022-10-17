@@ -23,8 +23,11 @@ public class UserAccount {
     @Column(nullable = false)
     private String email;
 
-    @Column(length = 15)
+    @Column(length = 15, nullable = false)
     private String nickname;
+
+    @Column(length = 15, nullable = false)
+    private String phoneNumber;
 
     @Column(columnDefinition = "TEXT")
     private String memo;

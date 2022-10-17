@@ -361,5 +361,5 @@ insert into REPLY (editor, content, board_id, created_at) values ('Roslyn', 'Pha
 insert into REPLY (editor, content, board_id, created_at) values ('Janine', 'Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.', 47, '2022-01-08 15:12:54');
 
 
-insert into USER_ACCOUNT (user_id, user_password, email, nickname, memo) values ('admin', '{noop}admin', 'email@com', '관리자', '관리자 메모');
-insert into USER_ACCOUNT (user_id, user_password, email, nickname, memo) values ('user', '{noop}user', 'email@co.kr', '일반 사용자', '사용자 메모');
+insert into USER_ACCOUNT (user_id, user_password, email, nickname, memo, phone_number) values ('admin', '{noop}admin', 'email@com', '관리자', '관리자 메모', '999-11111-1111');
+insert into USER_ACCOUNT (user_id, user_password, email, nickname, memo, phone_number) values ('user', '{noop}user', 'email@co.kr', '일반 사용자', '사용자 메모', '999-2222-2222');

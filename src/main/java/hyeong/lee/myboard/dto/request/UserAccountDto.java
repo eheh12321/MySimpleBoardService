@@ -16,6 +16,7 @@ public class UserAccountDto {
     private String password;
     private String email;
     private String nickname;
+    private String phoneNumber;
     private String memo;
 
     public static UserAccountDto from(UserAccount entity) {
@@ -24,6 +25,7 @@ public class UserAccountDto {
                 .password(entity.getUserPassword())
                 .email(entity.getEmail())
                 .nickname(entity.getNickname())
+                .phoneNumber(entity.getPhoneNumber())
                 .memo(entity.getMemo()).build();
     }
 
@@ -33,6 +35,7 @@ public class UserAccountDto {
                 .userPassword(password)
                 .email(email)
                 .nickname(nickname)
+                .phoneNumber(phoneNumber)
                 .memo(memo).build();
     }
 }
