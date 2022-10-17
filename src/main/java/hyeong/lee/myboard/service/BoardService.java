@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +68,7 @@ public class BoardService {
                 fileService.saveFile(board, dto.getFiles());
             }
         } catch (IOException e) {
-            log.error(">> 파일 저장에 실패했습니다.");
+            throw new IllegalStateException("파일 저장에 실패했습니다");
         }
         return savedBoard.getId();
     }
@@ -78,15 +79,15 @@ public class BoardService {
         // 식별자(userId)에 대한 값만 필요하므로 getById
         UserAccount findUser = userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId());
 
-        if(board.getUserAccount() == null) {
-            log.error("비회원이 작성한 글은 수정할 수 없습니다"); return;
+        if(board.getUserAccount() == null) { // 수정 권한이 없으면 예외 반환
+            throw new AccessDeniedException("AccessDeniedException");
         }
 
         // 작성자가 일치하는 경우에만 수정 가능
         if(board.getUserAccount().equals(findUser)) {
             board.updateContent(dto.getTitle(), dto.getContent());
         } else {
-            log.error(">> 사용자 정보가 일치하지 않습니다");
+            throw new IllegalArgumentException("사용자 정보가 일치하지 않습니다");
         }
     }
 
@@ -103,13 +104,13 @@ public class BoardService {
         if(board.getUserAccount().equals(userAccount)) {
             boardRepository.delete(board);
         } else {
-            log.error(">> 사용자 정보가 일치하지 않습니다");
+            throw new IllegalArgumentException("사용자 정보가 일치하지 않습니다");
         }
     }
 
     @Transactional(readOnly = true)
     public Board findById(Long boardId) {
         return boardRepository.findById(boardId)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다 -> " + boardId));
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다"));
     }
 }

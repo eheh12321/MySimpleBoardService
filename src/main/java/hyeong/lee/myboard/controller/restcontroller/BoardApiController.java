@@ -1,4 +1,4 @@
-package hyeong.lee.myboard.controller;
+package hyeong.lee.myboard.controller.restcontroller;
 
 import hyeong.lee.myboard.domain.UserAccount;
 import hyeong.lee.myboard.dto.request.BoardRequestDto;
@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,8 +47,9 @@ public class BoardApiController {
                                        @Valid @RequestBody BoardRequestDto dto) {
 
         if(boardPrincipal == null) { // 비로그인 상태라면 글 수정 불가
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(boardId);
+            throw new AccessDeniedException("AccessDeniedException.Login");
         }
+
         UserAccountDto userAccountDto = boardPrincipal.toDto();
         dto.setUserAccountDto(userAccountDto);
 
