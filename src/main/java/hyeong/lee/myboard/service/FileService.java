@@ -5,6 +5,7 @@ import hyeong.lee.myboard.domain.UploadFile;
 import hyeong.lee.myboard.repository.UploadFileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,13 +27,13 @@ public class FileService {
 
     private final UploadFileRepository uploadFileRepository;
 
+    @Value("${resources.location}")
+    private String resourceLocation;
+
     public void saveFile(Board board, MultipartFile[] files) throws IOException {
 
-        // 파일을 저장할 경로 불러오기
-        // 저장할 때는 "./" 가 생략되기 때문에 storage/~~로 바로 시작
-        // 가져올 때는 "/"를 앞에 따로 붙여줌
-        String savePath = getDirectory();
-
+        String datePath = getDateDirectory();
+        log.info("파일 저장 경로: {}", resourceLocation + datePath);
         for (MultipartFile file : files) {
 
             // 파일을 저장하기 위한 고유 이름 생성 (겹치면 안되기 때문에 UUID 이용)
@@ -46,14 +47,15 @@ public class FileService {
                     .board(board)
                     .originalFileName(file.getOriginalFilename())
                     .uniqueFileName(uniqueFileName)
-                    .filePath(File.separator + savePath).build();
+                    .filePath(File.separator + "storage" + datePath).build();
 
             // DB에 파일 저장
             uploadFileRepository.save(uploadFile);
 
             // 실제 서버에 파일 저장
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(savePath + uniqueFileName);
+            String fullPath = resourceLocation + datePath; // 절대경로
+            Path path = Paths.get(fullPath + uniqueFileName);
             Files.write(path, bytes);
         }
     }
@@ -61,22 +63,23 @@ public class FileService {
     /**
      * 날짜에 따른 업로트 파일 경로 생성 (연-월-일)
      * - 디텍토리가 존재하지 않는다면 새로 생성함
-     * - ex) storage/2022/10/15/
+     * - ex) /2022/10/15/
      */
-    private String getDirectory() {
+
+    private String getDateDirectory() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
-        String newDirectoryPath =
-                "storage"
-                + File.separator
-                + sdf.format(date).replace("-", File.separator)
-                + File.separator;
+        String datePath =
+                        File.separator
+                        + sdf.format(date).replace("-", File.separator)
+                        + File.separator;
 
-        File file = new File(newDirectoryPath);
-        if(!file.exists()) {
-            log.info(">> 새 디렉토리를 생성했습니다: {}", newDirectoryPath);
+        String fullPath = resourceLocation + datePath; // 절대경로
+        File file = new File(fullPath);
+        if (!file.exists()) {
+            log.info(">> 새 디렉토리를 생성했습니다: {}", Paths.get(fullPath).toUri());
             file.mkdirs(); // 디렉토리가 존재하지 않는다면 새로 생성
         }
-        return newDirectoryPath;
+        return datePath;
     }
 }
