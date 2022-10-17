@@ -3,24 +3,15 @@ package hyeong.lee.myboard.controller;
 import hyeong.lee.myboard.domain.UserAccount;
 import hyeong.lee.myboard.dto.request.ReplyRequestDto;
 import hyeong.lee.myboard.dto.request.UserAccountDto;
-import hyeong.lee.myboard.exception.ErrorDetail;
-import hyeong.lee.myboard.exception.ErrorResult;
 import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.ReplyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/replies")
@@ -28,27 +19,11 @@ import java.util.stream.Collectors;
 public class ReplyApiController {
 
     private final ReplyService replyService;
-    private final MessageSource messageSource;
 
     @PostMapping
     public ResponseEntity<?> create(
             @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
-            @Valid @RequestBody ReplyRequestDto dto, BindingResult bindingResult, HttpServletRequest request) {
-
-        if (bindingResult.hasErrors()) {
-            List<ErrorDetail> fieldErrorList = bindingResult.getFieldErrors().stream()
-                    .map(error -> ErrorDetail.from(error, messageSource, request.getLocale()))
-                    .collect(Collectors.toList());
-
-            ErrorResult errorResult = ErrorResult.builder()
-                    .timestamp(LocalDateTime.now())
-                    .status(HttpStatus.BAD_REQUEST.value())
-                    .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                    .errors(fieldErrorList)
-                    .message("입력값 검증에 실패했습니다")
-                    .path(request.getRequestURI()).build();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResult);
-        }
+            @Valid @RequestBody ReplyRequestDto dto) {
 
         if (boardPrincipal != null) {
             UserAccountDto userAccountDto = boardPrincipal.toDto();
