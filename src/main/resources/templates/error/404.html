@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
+    <title>404 Error Page</title>
+    <link/>
+</head>
+<body>
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold"> <span class="text-danger">404</span> Error</h1>
+        <p class="fs-3"> 페이지를 찾을 수 없습니다. </p>
+        <hr>
+        <div class="text-start">
+            <p th:text="|예외 발생시각: ${timestamp}|"></p>
+            <p th:text="|요청 경로: ${path}|"></p>
+            <p th:text="|응답 메세지: ${message}|"></p>
+        </div>
+        <hr>
+        <a href="/" class="btn btn-primary">메인 화면으로...</a>
+    </div>
+</div>
+</body>
+</html>

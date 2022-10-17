@@ -1,8 +1,8 @@
-package hyeong.lee.myboard.controller;
+package hyeong.lee.myboard.controller.restcontroller;
 
 import hyeong.lee.myboard.domain.UserAccount;
-import hyeong.lee.myboard.dto.ReplyRequestDto;
-import hyeong.lee.myboard.dto.UserAccountDto;
+import hyeong.lee.myboard.dto.request.ReplyRequestDto;
+import hyeong.lee.myboard.dto.request.UserAccountDto;
 import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,11 @@ public class ReplyApiController {
     private final ReplyService replyService;
 
     @PostMapping
-    public ResponseEntity<Long> create(
+    public ResponseEntity<?> create(
             @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
             @Valid @RequestBody ReplyRequestDto dto) {
 
-        if(boardPrincipal != null) {
+        if (boardPrincipal != null) {
             UserAccountDto userAccountDto = boardPrincipal.toDto();
             dto.setEditor(userAccountDto.getNickname());
             dto.setUserAccountDto(userAccountDto);

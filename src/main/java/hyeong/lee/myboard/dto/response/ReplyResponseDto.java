@@ -1,4 +1,4 @@
-package hyeong.lee.myboard.dto;
+package hyeong.lee.myboard.dto.response;
 
 import hyeong.lee.myboard.domain.Reply;
 import lombok.Builder;

@@ -1,7 +1,7 @@
 package hyeong.lee.myboard.dto.security;
 
 import hyeong.lee.myboard.domain.UserAccount;
-import hyeong.lee.myboard.dto.UserAccountDto;
+import hyeong.lee.myboard.dto.request.UserAccountDto;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

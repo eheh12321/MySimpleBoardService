@@ -26,3 +26,5 @@ spring:
   sql.init.mode: never  # 테스트용 데이터는 언제 사용할 것인지? (data.sql)
   mvc:
     static-path-pattern: /resources/** # 정적 리소스에 접근할 때는 항상 아래 경로로 요청
+  messages: # 메세지 소스 설정
+    basename: errors

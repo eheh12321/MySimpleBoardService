@@ -131,6 +131,6 @@ function markingErrorField(response) {
     var error;
     for(var i = 0, length = errorFields.length; i < length; i++) {
         error = errorFields[i];
-        $('#' + error.field + '-field-error').text(error.defaultMessage);
+        $('#' + error.field + '-field-error').text(error.message);
     }
 }

@@ -1,8 +1,8 @@
 package hyeong.lee.myboard.controller;
 
 import hyeong.lee.myboard.domain.type.SearchType;
-import hyeong.lee.myboard.dto.BoardResponseDto;
-import hyeong.lee.myboard.dto.BoardWithRepliesResponseDto;
+import hyeong.lee.myboard.dto.response.BoardResponseDto;
+import hyeong.lee.myboard.dto.response.BoardWithRepliesResponseDto;
 import hyeong.lee.myboard.service.BoardService;
 import hyeong.lee.myboard.service.PagingService;
 import lombok.RequiredArgsConstructor;

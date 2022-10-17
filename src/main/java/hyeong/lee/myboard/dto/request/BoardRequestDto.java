@@ -1,34 +1,38 @@
-package hyeong.lee.myboard.dto;
+package hyeong.lee.myboard.dto.request;
 
 import hyeong.lee.myboard.domain.Board;
-import hyeong.lee.myboard.domain.Reply;
 import hyeong.lee.myboard.domain.UserAccount;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@ToString
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReplyRequestDto {
-        
-    private Long boardId;
+public class BoardRequestDto {
+
+    @Size(max = 50)
+    @NotBlank
+    private String title;
 
     @Size(max = 15)
     @NotBlank
     private String editor;
-    
+
     @NotBlank
     private String content;
 
+    private MultipartFile[] files;
     private UserAccountDto userAccountDto;
 
-    public Reply toEntity(Board board) {
+    public Board toEntity() {
         UserAccount userAccount = userAccountDto == null ? null : userAccountDto.toEntity();
 
-        return Reply.builder()
-                .board(board)
+        return Board.builder()
+                .title(title)
                 .editor(editor)
                 .content(content)
                 .userAccount(userAccount)
