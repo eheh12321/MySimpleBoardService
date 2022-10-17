@@ -3,19 +3,9 @@
 REPOSITORY=/home/ec2-user/app/mySimpleBoardService_build
 PROJECT_NAME=mySimpleBoardService
 
-echo "> 현재 구동중인 애플리케이션 pid 확인"
+echo "> 현재 8080 포트를 사용중인 애플리케이션 종료"
 
-CURRENT_PID=$(pgrep -fl $PROJECT_NAME | grep jar | awk '{pring $1}')
-
-echo "현재 구동중인 애플리케이션 pid: $CURRENT_PID"
-
-if [ -z "$CURRENT_PID" ]; then
-  echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다"
-else
-        echo "> kill -15 $CURRENT_PID"
-        kill -15 $CURRENT_PID
-        sleep 5
-fi
+sudo kill $(lsof -t -i:8080)
 
 echo "> Build 파일 복사"
 echo "> cp $REPOSITORY/zip/*.jar $REPOSITORY/"
@@ -36,4 +26,5 @@ echo "> $JAR_NAME 실행"
 
 java -jar \
         -Dspring.config.location=classpath:/application.yml \
+        -Dspring.profiles.active=prod \
         $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
