@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,7 @@ public class UserAccountController {
     private final SignUpUserValidator signUpUserValidator;
 
     @InitBinder
-    public void init(WebDataBinder dataBinder) {
+    protected void initBinder(WebDataBinder dataBinder) {
         dataBinder.addValidators(signUpUserValidator);
     }
 
@@ -32,10 +31,10 @@ public class UserAccountController {
         return "sign-up";
     }
 
-    // 회원가입
+
     @ResponseBody
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@Validated @Valid UserSignUpRequestDto dto) {
+    public ResponseEntity<String> signUp(@Valid @RequestBody UserSignUpRequestDto dto) {
         userAccountService.create(dto);
         return ResponseEntity.ok("OK");
     }

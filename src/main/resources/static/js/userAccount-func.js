@@ -1,13 +1,21 @@
 function create_user() {
-
     if(confirm("등록하시겠습니까?")) {
-        const formData = $("#userSignUpForm").serializeArray();
+        const create_user_data = {
+            userId: $("#userId").val(),
+            userPassword: $("#userPassword").val(),
+            nickname: $("#nickname").val(),
+            phoneNumber: $("#phoneNumber").val(),
+            email: $("#email").val()
+        };
+
         $(".field-error").text(""); // 미리 Error 필드 초기화
 
         $.ajax({
             type: 'POST',
             url: '/user/sign-up',
-            data: formData,
+            data: JSON.stringify(create_user_data),
+            datatype: 'JSON',
+            contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 alert("환영합니다!");
                 window.location.replace("/login");
