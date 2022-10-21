@@ -1,6 +1,7 @@
 package hyeong.lee.myboard.controller;
 
 import hyeong.lee.myboard.dto.request.UserSignUpRequestDto;
+import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.UserAccountService;
 import hyeong.lee.myboard.validator.SignUpUserValidator;
 import lombok.RequiredArgsConstructor;
