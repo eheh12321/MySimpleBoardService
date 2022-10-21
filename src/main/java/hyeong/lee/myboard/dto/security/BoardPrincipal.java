@@ -25,7 +25,9 @@ public class BoardPrincipal implements UserDetails {
     private final String nickname;
     private final String memo;
 
-    public static BoardPrincipal of(String username, String password, String auth, String email, String nickname, String memo) {
+    private int loginFailCount; // 5회 이상 실패 시 계정 잠김 설정
+
+    public static BoardPrincipal of(String username, String password, String auth, String email, String nickname, String memo, int loginFailCount) {
 
         RoleType roleType = RoleType.valueOf(auth); // auth 문자열에 해당하는 Enum 꺼내기
 
@@ -42,6 +44,7 @@ public class BoardPrincipal implements UserDetails {
                 .email(email)
                 .nickname(nickname)
                 .memo(memo)
+                .loginFailCount(loginFailCount)
                 .build();
     }
 
@@ -51,7 +54,8 @@ public class BoardPrincipal implements UserDetails {
                 .password(password)
                 .email(email)
                 .nickname(nickname)
-                .memo(memo).build();
+                .memo(memo)
+                .loginFailCount(loginFailCount).build();
     }
 
     public UserAccount toEntity() {
@@ -60,11 +64,18 @@ public class BoardPrincipal implements UserDetails {
                 .userPassword(password)
                 .email(email)
                 .nickname(nickname)
-                .memo(memo).build();
+                .memo(memo)
+                .loginFailCount(loginFailCount).build();
     }
 
     public static BoardPrincipal from(UserAccountDto dto) {
-        return BoardPrincipal.of(dto.getUserId(), dto.getPassword(), dto.getAuth(), dto.getEmail(), dto.getNickname(), dto.getMemo());
+        return BoardPrincipal.of(dto.getUserId(),
+                dto.getPassword(),
+                dto.getAuth(),
+                dto.getEmail(),
+                dto.getNickname(),
+                dto.getMemo(),
+                dto.getLoginFailCount());
     }
 
     public enum RoleType {
@@ -95,12 +106,13 @@ public class BoardPrincipal implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public boolean isAccountNonLocked() { // 계정이 잠겨있지 않은지? (true=사용 가능)
+        // 비밀번호 5회 초과 실패 시 계정 잠김 설정
+        return loginFailCount < 5;
     }
 
     @Override
-    public boolean isAccountNonLocked() {
+    public boolean isAccountNonExpired() {
         return true;
     }
 

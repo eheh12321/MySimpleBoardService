@@ -19,6 +19,7 @@ public class UserAccountDto {
     private String nickname;
     private String phoneNumber;
     private String memo;
+    private int loginFailCount;
 
     public static UserAccountDto from(UserAccount entity) {
         return UserAccountDto.builder()
@@ -28,7 +29,8 @@ public class UserAccountDto {
                 .email(entity.getEmail())
                 .nickname(entity.getNickname())
                 .phoneNumber(entity.getPhoneNumber())
-                .memo(entity.getMemo()).build();
+                .memo(entity.getMemo())
+                .loginFailCount(entity.getLoginFailCount()).build();
     }
 
     public UserAccount toEntity() {
@@ -39,6 +41,7 @@ public class UserAccountDto {
                 .email(email)
                 .nickname(nickname)
                 .phoneNumber(phoneNumber)
-                .memo(memo).build();
+                .memo(memo)
+                .loginFailCount(loginFailCount).build();
     }
 }

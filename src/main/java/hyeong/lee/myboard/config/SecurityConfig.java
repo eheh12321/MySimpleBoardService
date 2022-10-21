@@ -5,6 +5,7 @@ import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.handler.LoginFailureHandler;
 import hyeong.lee.myboard.handler.LoginSuccessHandler;
 import hyeong.lee.myboard.repository.UserAccountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +15,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+@RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
+
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final LoginFailureHandler loginFailureHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,25 +35,14 @@ public class SecurityConfig {
                 .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/login")
-                    .successHandler(loginSuccessHandler())
-                    .failureHandler(loginFailureHandler())
+                    .successHandler(loginSuccessHandler)
+                    .failureHandler(loginFailureHandler)
                 .and()
                     .logout()
                     .logoutSuccessUrl("/")
                 .and()
                 .build();
     }
-
-    @Bean
-    public AuthenticationSuccessHandler loginSuccessHandler() {
-        return new LoginSuccessHandler();
-    }
-
-    @Bean
-    public AuthenticationFailureHandler loginFailureHandler() {
-        return new LoginFailureHandler();
-    }
-
     @Bean
     public UserDetailsService userDetailsService(UserAccountRepository userAccountRepository) {
         // 로그인 시점에 한번 실행
