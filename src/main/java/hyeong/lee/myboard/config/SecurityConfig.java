@@ -2,6 +2,8 @@ package hyeong.lee.myboard.config;
 
 import hyeong.lee.myboard.dto.request.UserAccountDto;
 import hyeong.lee.myboard.dto.security.BoardPrincipal;
+import hyeong.lee.myboard.handler.LoginFailureHandler;
+import hyeong.lee.myboard.handler.LoginSuccessHandler;
 import hyeong.lee.myboard.repository.UserAccountRepository;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 public class SecurityConfig {
@@ -21,16 +25,30 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .antMatchers("/", "/boards/**", "/api/**", "/resources/**", "/storage/**", "/about/**", "/user/sign-up").permitAll()
+                                .antMatchers("/", "/boards/**", "/api/**", "/resources/**", "/storage/**", "/about/**", "/user/sign-up", "/login").permitAll()
                                 .antMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin()
-                    .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                    .and()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .successHandler(loginSuccessHandler())
+                    .failureHandler(loginFailureHandler())
+                .and()
+                    .logout()
+                    .logoutSuccessUrl("/")
+                .and()
                 .build();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler loginFailureHandler() {
+        return new LoginFailureHandler();
     }
 
     @Bean

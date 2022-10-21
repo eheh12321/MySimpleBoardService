@@ -21,4 +21,10 @@ public class HomeController {
     public String adminPage() {
         return "admin/index";
     }
+
+    // @PostMapping("/login")은 스프링 시큐리티가 내부적으로 처리한다
+    @GetMapping("/login")
+    public String loginPage() {
+        return "/login";
+    }
 }
