@@ -26,7 +26,6 @@ public class UserSignUpRequestDto {
      */
     @Size(min = 5, max = 30)
     @Pattern(regexp = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,}[a-zA-Z0-9]$", message = "아이디 규격에 맞지 않습니다.")
-    @NotBlank
     private String userId;
 
     /**
@@ -35,7 +34,6 @@ public class UserSignUpRequestDto {
      */
     @Size(max=30)
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_+-=`<>?]).{6,}", message = "비밀번호 규격에 맞지 않습니다.")
-    @NotBlank
     private String userPassword;
 
     @Size(max = 15)
@@ -50,11 +48,8 @@ public class UserSignUpRequestDto {
      * 전화번호 검증: 000-000(0)-0000 형식 고정
      */
     @Size(max = 15)
-    @NotBlank
     @Pattern(regexp = "\\d{3}-\\d{3,4}-\\d{4}", message = "전화번호 규격(000-000(0)-0000)에 맞지 않습니다")
     private String phoneNumber;
-
-    private int test;
 
     public UserAccount toEntity(PasswordEncoder passwordEncoder) {
         return UserAccount.builder()
