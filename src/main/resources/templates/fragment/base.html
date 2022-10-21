@@ -41,7 +41,7 @@
             <div class="text-end">
                 <a href="/login" sec:authorize="!isAuthenticated()" type="button" class="btn btn-outline-light me-2">Login</a>
                 <a href="/logout" sec:authorize="isAuthenticated()" type="button" class="btn btn-outline-light me-2">Logout</a>
-                <a type="button" sec:authorize="!isAuthenticated()" class="btn btn-warning">Sign-up</a>
+                <a href="/user/sign-up" sec:authorize="!isAuthenticated()" type="button" class="btn btn-warning">Sign-up</a>
             </div>
         </div>
     </div>

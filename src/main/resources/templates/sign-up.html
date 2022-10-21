@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
+  <title>서비스 회원가입</title>
+  <link/>
+</head>
+<body>
+<header th:replace="~{fragment/base::default_topbar}"></header>
+<main>
+  <div class="container py-4">
+    <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="row justify-content-center">
+        <div class="col-6">
+          <h4 class="mb-3 text-center">회원가입</h4>
+          <hr>
+          <form id="userSignUpForm" action="/user/sign-up" method="post">
+            <div class="row g-3">
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">로그인 ID</span>
+                  <input type="text" class="form-control" id="userId" name="userId" required>
+                </div>
+                <div class="row">
+                  <p class="field-error text-danger text-end m-0" id="userId-field-error"></p>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">로그인 PW</span>
+                  <input type="password" class="form-control" id="userPassword" name="userPassword" required>
+                </div>
+                <div class="row">
+                  <p class="field-error text-danger text-end m-0" id="userPassword-field-error"></p>
+                </div>
+              </div>
+              <hr>
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">닉네임</span>
+                  <input type="text" class="form-control" id="nickname" name="nickname" required>
+                </div>
+                <div class="row">
+                  <p class="field-error text-danger text-end m-0" id="nickname-field-error"></p>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">핸드폰 번호</span>
+                  <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                </div>
+                <div class="row">
+                  <p class="field-error text-danger text-end m-0" id="phoneNumber-field-error"></p>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text">이메일</span>
+                  <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="row">
+                  <p class="field-error text-danger text-end m-0" id="email-field-error"></p>
+                </div>
+              </div>
+              <hr>
+              <button type="button" class="btn btn-primary" onclick="create_user()">회원가입</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer th:replace="~{fragment/base::default_footer(~{::script})}">
+  <script src="/resources/js/userAccount-func.js"></script>
+</footer>
+</body>
+</html>

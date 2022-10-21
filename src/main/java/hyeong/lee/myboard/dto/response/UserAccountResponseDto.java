@@ -11,6 +11,7 @@ public class UserAccountResponseDto {
     private final String userId;
     private final String email;
     private final String nickname;
+    private final String phoneNumber;
     private final String memo;
 
     public static UserAccountResponseDto from(UserAccount userAccount) {
@@ -18,6 +19,7 @@ public class UserAccountResponseDto {
                 .userId(userAccount.getUserId())
                 .email(userAccount.getEmail())
                 .nickname(userAccount.getNickname())
+                .phoneNumber(userAccount.getPhoneNumber())
                 .memo(userAccount.getMemo()).build();
     }
 }

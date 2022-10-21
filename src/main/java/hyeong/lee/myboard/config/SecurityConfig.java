@@ -21,7 +21,7 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .antMatchers("/", "/boards/**", "/api/**", "/resources/**", "/storage/**", "/about/**").permitAll()
+                                .antMatchers("/", "/boards/**", "/api/**", "/resources/**", "/storage/**", "/about/**", "/user/sign-up").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin()

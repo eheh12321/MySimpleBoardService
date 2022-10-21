@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,28 @@ import java.util.stream.Collectors;
 public class ExceptionControllerAdvice {
 
     private final MessageSource messageSource;
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ErrorResult handleMethodArgumentNotValidException(MethodArgumentNotValidException exception, HttpServletRequest request) {
+        log.error("[MethodArgumentNotValidException] handle -> {}", exception.getObjectName());
+
+        // 필드 에러 정보 모음
+        List<ErrorDetail> fieldErrorList = exception.getFieldErrors().stream()
+                .map(error -> ErrorDetail.from(error, messageSource, request.getLocale()))
+                .collect(Collectors.toList());
+
+        // 객체 반환
+        return ErrorResult.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .errors(fieldErrorList)
+                .message(messageSource.getMessage("MethodArgumentNotValidException", null, request.getLocale()))
+                .path(request.getRequestURI()).build();
+    }
+
 
     /**
      * BindException 처리
@@ -44,7 +67,7 @@ public class ExceptionControllerAdvice {
                 .path(request.getRequestURI()).build();
     }
 
-    
+
     /**
      * AccessDeniedException 처리
      * 접근 권한이 없는 경우 FORBIDDEN(403) 코드와 함께 반환
