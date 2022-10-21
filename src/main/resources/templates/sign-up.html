@@ -61,6 +61,16 @@
                   <p class="field-error text-danger text-end m-0" id="email-field-error"></p>
                 </div>
               </div>
+              <div class="mb-3">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="auth" id="auth_user" value="USER" checked>
+                  <label class="form-check-label" for="auth_user">일반 사용자</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="auth" id="auth_admin" value="ADMIN">
+                  <label class="form-check-label" for="auth_admin">관리자</label>
+                </div>
+              </div>
               <hr>
               <button type="button" class="btn btn-primary" onclick="create_user()">회원가입</button>
             </div>
