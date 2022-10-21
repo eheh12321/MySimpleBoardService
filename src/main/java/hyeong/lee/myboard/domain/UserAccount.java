@@ -33,6 +33,8 @@ public class UserAccount extends AuditingFields implements Persistable<String> {
     @Column(columnDefinition = "TEXT")
     private String memo;
 
+    private String auth;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
+    <title>관리자 전용 페이지</title>
+    <link/>
+</head>
+<body>
+<header th:replace="~{fragment/base::default_topbar}"></header>
+<main>
+    <div class="container py-4">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container px-4 py-5">
+                <h5 class="display-5 fw-bold mb-3">관리자 전용 페이지</h5>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragment/base::default_footer(~{::script})}">
+    <script/>
+</footer>
+</body>
+</html>

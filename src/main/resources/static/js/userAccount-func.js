@@ -5,7 +5,8 @@ function create_user() {
             userPassword: $("#userPassword").val(),
             nickname: $("#nickname").val(),
             phoneNumber: $("#phoneNumber").val(),
-            email: $("#email").val()
+            email: $("#email").val(),
+            auth: $("input[name='auth']:checked").val()
         };
 
         $(".field-error").text(""); // 미리 Error 필드 초기화

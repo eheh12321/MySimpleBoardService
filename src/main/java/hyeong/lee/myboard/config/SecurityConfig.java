@@ -22,6 +22,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .antMatchers("/", "/boards/**", "/api/**", "/resources/**", "/storage/**", "/about/**", "/user/sign-up").permitAll()
+                                .antMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin()

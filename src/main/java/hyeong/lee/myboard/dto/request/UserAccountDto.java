@@ -14,6 +14,7 @@ public class UserAccountDto {
 
     private String userId;
     private String password;
+    private String auth;
     private String email;
     private String nickname;
     private String phoneNumber;
@@ -23,6 +24,7 @@ public class UserAccountDto {
         return UserAccountDto.builder()
                 .userId(entity.getUserId())
                 .password(entity.getUserPassword())
+                .auth(entity.getAuth())
                 .email(entity.getEmail())
                 .nickname(entity.getNickname())
                 .phoneNumber(entity.getPhoneNumber())
@@ -33,6 +35,7 @@ public class UserAccountDto {
         return UserAccount.builder()
                 .userId(userId)
                 .userPassword(password)
+                .auth(auth)
                 .email(email)
                 .nickname(nickname)
                 .phoneNumber(phoneNumber)

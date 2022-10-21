@@ -9,6 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,18 +25,20 @@ public class BoardPrincipal implements UserDetails {
     private final String nickname;
     private final String memo;
 
-    public static BoardPrincipal of(String username, String password, String email, String nickname, String memo) {
-        
-        // TODO: 로그인 사용자 별 권한 분리
-        Set<RoleType> roleTypes = Set.of(RoleType.USER);
-        
+    public static BoardPrincipal of(String username, String password, String auth, String email, String nickname, String memo) {
+
+        RoleType roleType = RoleType.valueOf(auth); // auth 문자열에 해당하는 Enum 꺼내기
+
+        Set<GrantedAuthority> roleSet = new HashSet<>();
+        // 동시에 여러개의 권한을 가질수도 있으므로 ','로 구분된 여러개의 권한 집어넣기
+        for(String role : roleType.getAuth().split(",")) {
+            roleSet.add(new SimpleGrantedAuthority(role));
+        }
+
         return BoardPrincipal.builder()
                 .username(username)
                 .password(password)
-                .authorities(roleTypes.stream()
-                        .map(RoleType::getAuth)
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toUnmodifiableSet()))
+                .authorities(roleSet)
                 .email(email)
                 .nickname(nickname)
                 .memo(memo)
@@ -60,10 +64,11 @@ public class BoardPrincipal implements UserDetails {
     }
 
     public static BoardPrincipal from(UserAccountDto dto) {
-        return BoardPrincipal.of(dto.getUserId(), dto.getPassword(), dto.getEmail(), dto.getNickname(), dto.getMemo());
+        return BoardPrincipal.of(dto.getUserId(), dto.getPassword(), dto.getAuth(), dto.getEmail(), dto.getNickname(), dto.getMemo());
     }
 
     public enum RoleType {
+        ADMIN("ROLE_ADMIN"),
         USER("ROLE_USER");
 
         @Getter

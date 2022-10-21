@@ -51,10 +51,13 @@ public class UserSignUpRequestDto {
     @Pattern(regexp = "\\d{3}-\\d{3,4}-\\d{4}", message = "전화번호 규격(000-000(0)-0000)에 맞지 않습니다")
     private String phoneNumber;
 
+    private String auth;
+
     public UserAccount toEntity(PasswordEncoder passwordEncoder) {
         return UserAccount.builder()
                 .userId(userId)
                 .userPassword(passwordEncoder.encode(userPassword))
+                .auth(auth)
                 .email(email)
                 .nickname(nickname)
                 .phoneNumber(phoneNumber).build();
