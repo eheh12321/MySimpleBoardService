@@ -15,13 +15,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
 
-    private final LoginSuccessHandler loginSuccessHandler;
-    private final LoginFailureHandler loginFailureHandler;
+    private final AuthenticationSuccessHandler loginSuccessHandler;
+    private final AuthenticationFailureHandler loginFailureHandler;
+    private final LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,7 +43,9 @@ public class SecurityConfig {
                     .failureHandler(loginFailureHandler)
                 .and()
                     .logout()
-                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSION_ID")
+                    .logoutSuccessHandler(logoutSuccessHandler)
                 .and()
                 .build();
     }
