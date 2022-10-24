@@ -1,8 +1,10 @@
 package hyeong.lee.myboard.controller;
 
+import hyeong.lee.myboard.domain.Board;
 import hyeong.lee.myboard.domain.type.SearchType;
 import hyeong.lee.myboard.dto.response.BoardResponseDto;
 import hyeong.lee.myboard.dto.response.BoardWithRepliesResponseDto;
+import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.BoardService;
 import hyeong.lee.myboard.service.PagingService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,8 +64,17 @@ public class BoardController {
     }
 
     @GetMapping("/edit/{boardId}")
-    public String editBoard(@PathVariable Long boardId, Model model) {
-        BoardResponseDto dto = boardService.readById(boardId);
+    public String editBoard(@AuthenticationPrincipal BoardPrincipal boardPrincipal,
+                            @PathVariable Long boardId, Model model) {
+        Board board = boardService.findById(boardId);
+
+        if(boardPrincipal == null || board.getUserAccount() == null) { // 비로그인 상태거나, 익명이 작성한 글은 수정 불가
+            throw new AccessDeniedException("AccessDeniedException.Login");
+        } else if (!board.getUserAccount().getUserId().equals(boardPrincipal.getUsername())) { // 게시글 작성자 정보가 로그인 정보와 일치하지 않으면 수정불가
+            throw new AccessDeniedException("AccessDeniedException");
+        }
+
+        BoardResponseDto dto = BoardResponseDto.from(board);
         model.addAttribute("board", dto);
 
         return "board/board-edit";

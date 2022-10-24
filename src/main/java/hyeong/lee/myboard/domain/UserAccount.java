@@ -35,6 +35,18 @@ public class UserAccount extends AuditingFields implements Persistable<String> {
 
     private String auth;
 
+    private int loginFailCount; // 5회 이상 실패 시 계정 잠김 설정
+
+    // 로그인 실패
+    public int loginFailure() {
+        return ++loginFailCount;
+    }
+
+    // 로그인 성공 (로그인 시도 횟수 초기화)
+    public void loginSuccess() {
+        loginFailCount = 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
