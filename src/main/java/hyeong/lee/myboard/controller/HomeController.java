@@ -40,6 +40,6 @@ public class HomeController {
             String referer = request.getHeader("referer");
             request.getSession().setAttribute("url_prior_login", referer);
         }
-        return "/login";
+        return "auth/login";
     }
 }
