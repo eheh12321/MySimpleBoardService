@@ -23,13 +23,11 @@
 <br>
 
 ## 2. 프로젝트 상세
-<details>
-   <summary> ERD 다이어그램 </summary>
-   
+### 2-1. 시스템 구조도
+![image](https://user-images.githubusercontent.com/74748851/197463734-3e5793ad-3e57-409b-ad88-3b807c36a02a.png)
+
+### 2-2. ERD 다이어그램
 ![image](https://user-images.githubusercontent.com/74748851/197431383-2e1e26ba-38bd-4023-8a50-2eb1c9998b69.png)
-</details>
-<br>
 
-* 프로젝트 회고 -> <https://www.notion.so/980ddcb2ff774447bb074c3c0fd604bb>
-
-<br>
+### 2-3. 프로젝트 회고
+- <https://www.notion.so/980ddcb2ff774447bb074c3c0fd604bb>
