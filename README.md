@@ -5,6 +5,7 @@
 
 <img alt="main" src="https://user-images.githubusercontent.com/74748851/197431094-22694ebc-9879-47c4-92c4-ba82741ba650.PNG" height="400"/>
 
+- 배포 링크: http://ec2-13-125-30-88.ap-northeast-2.compute.amazonaws.com:8080/
 <br>
 
 ## 1. 기술 스택
