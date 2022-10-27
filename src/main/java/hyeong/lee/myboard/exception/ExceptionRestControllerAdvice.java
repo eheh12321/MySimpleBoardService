@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
-@RestControllerAdvice(basePackages = "hyeong.lee.myboard.controller.restcontroller")
+@RestControllerAdvice(basePackages = "hyeong.lee.myboard.restcontroller")
 public class ExceptionRestControllerAdvice {
 
     private final MessageSource messageSource;

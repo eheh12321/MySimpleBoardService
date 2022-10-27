@@ -1,4 +1,4 @@
-package hyeong.lee.myboard.controller.restcontroller;
+package hyeong.lee.myboard.restcontroller;
 
 import hyeong.lee.myboard.domain.UserAccount;
 import hyeong.lee.myboard.dto.request.BoardRequestDto;
