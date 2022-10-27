@@ -13,7 +13,7 @@ function create_user() {
 
         $.ajax({
             type: 'POST',
-            url: '/user/sign-up',
+            url: '/api/user/sign-up',
             data: JSON.stringify(create_user_data),
             datatype: 'JSON',
             contentType: 'application/json; charset=utf-8',
