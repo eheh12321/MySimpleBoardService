@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,10 +27,11 @@ import java.io.IOException;
 @Service
 public class BoardService {
 
-    private final BoardMapper boardMapper;
-
     private final FileService fileService;
     private final BoardRepository boardRepository;
+
+    private final BoardMapper boardMapper;
+    private final PasswordEncoder passwordEncoder; // BCryptEncoder
 
     @Transactional(readOnly = true) // 댓글 정보와 함께 단건 읽기
     public BoardWithRepliesResponseDto readWithRepliesById(Long boardId) {
@@ -59,7 +61,7 @@ public class BoardService {
 
     public Long create(BoardRequest.BoardPostDto boardPostDto, UserAccountDto userAccountDto) {
         // (1) Dto -> Entity 변환
-        Board board = boardMapper.BoardPostDtoToBoardEntity(boardPostDto, userAccountDto);
+        Board board = boardMapper.BoardPostDtoToBoardEntity(boardPostDto, userAccountDto, passwordEncoder);
 
         // (2) Entity 저장
         Board savedBoard = boardRepository.save(board);
