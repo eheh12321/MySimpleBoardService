@@ -90,7 +90,6 @@ public class ExceptionRestControllerAdvice {
     /**
      * 런타임 예외에 대한 처리
      * EntityNotFoundException, IllegalArgumentException 등등 나머지 전부 처리
-     * (예외 종류가 많다보니 국제화 적용 X)
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException.class)
@@ -102,7 +101,7 @@ public class ExceptionRestControllerAdvice {
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .errors(List.of())
-                .message(exception.getMessage())
+                .message(messageSource.getMessage(exception.getMessage(), null, request.getLocale()))
                 .path(request.getRequestURI()).build();
     }
 
