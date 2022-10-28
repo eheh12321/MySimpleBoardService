@@ -13,8 +13,6 @@
                 <h5 class="display-5 fw-bold mb-3">게시글 수정</h5>
                 <hr>
                 <form>
-                    <!-- 작성자 수정 진행하지 않지만 검증 통과를 위해 같이 보내는 용도 -->
-                    <input type="hidden" class="form-control" id="editor" name="editor" th:value="${#authentication.principal.nickname}">
                     <div class="mb-3">
                         <div class="input-group">
                             <span class="input-group-text">제목</span>

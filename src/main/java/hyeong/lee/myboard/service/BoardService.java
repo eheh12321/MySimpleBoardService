@@ -2,11 +2,12 @@ package hyeong.lee.myboard.service;
 
 import hyeong.lee.myboard.domain.Board;
 import hyeong.lee.myboard.domain.UserAccount;
-import hyeong.lee.myboard.dto.request.BoardRequestDto;
+import hyeong.lee.myboard.dto.request.BoardRequest;
+import hyeong.lee.myboard.dto.request.UserAccountDto;
 import hyeong.lee.myboard.dto.response.BoardResponseDto;
 import hyeong.lee.myboard.dto.response.BoardWithRepliesResponseDto;
+import hyeong.lee.myboard.mapper.BoardMapper;
 import hyeong.lee.myboard.repository.BoardRepository;
-import hyeong.lee.myboard.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -24,14 +26,10 @@ import java.io.IOException;
 @Service
 public class BoardService {
 
+    private final BoardMapper boardMapper;
+
     private final FileService fileService;
     private final BoardRepository boardRepository;
-    private final UserAccountRepository userAccountRepository;
-
-    @Transactional(readOnly = true) // 단건 읽기
-    public BoardResponseDto readById(Long boardId) {
-        return BoardResponseDto.from(findById(boardId));
-    }
 
     @Transactional(readOnly = true) // 댓글 정보와 함께 단건 읽기
     public BoardWithRepliesResponseDto readWithRepliesById(Long boardId) {
@@ -59,58 +57,70 @@ public class BoardService {
         return dto;
     }
 
-    public Long create(BoardRequestDto dto) {
-        Board board = dto.toEntity();
+    public Long create(BoardRequest.BoardPostDto boardPostDto, UserAccountDto userAccountDto) {
+        // (1) Dto -> Entity 변환
+        Board board = boardMapper.BoardPostDtoToBoardEntity(boardPostDto, userAccountDto);
+
+        // (2) Entity 저장
         Board savedBoard = boardRepository.save(board);
+
+        // (3) 첨부파일이 있는경우 저장
         try {
-            // 첨부파일이 있는경우 저장 (첨부파일이 없는 경우 NULL이 오는 것이 아니라 길이 1짜리 빈배열이 전달됨)
-            if(!(dto.getFiles().length == 1 && dto.getFiles()[0].isEmpty())) {
-                fileService.saveFile(board, dto.getFiles());
+            for (MultipartFile file : boardPostDto.getFiles()) {
+                if(!file.isEmpty()) {
+                    fileService.saveFile(board, file);
+                }
             }
         } catch (IOException e) {
-            throw new IllegalStateException("파일 저장에 실패했습니다");
+            throw new IllegalStateException("IllegalStateException.save_file");
         }
+
+        // (4) 생성된 게시글의 ID 반환
         return savedBoard.getId();
     }
 
-    public void update(Long boardId, BoardRequestDto dto) {
-        // 실제 값이 필요하므로 findById
+    public void update(Long boardId, BoardRequest.BoardPatchDto boardPatchDto, UserAccountDto userAccountDto) {
+        // (1) Board Entity 조회
         Board board = findById(boardId);
-        // 식별자(userId)에 대한 값만 필요하므로 getById
-        UserAccount findUser = userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId());
-
-        if(board.getUserAccount() == null) { // 수정 권한이 없으면 예외 반환
+        if(board.getUserAccount() == null) { // 비회원이 작성한 글은 수정 불가
             throw new AccessDeniedException("AccessDeniedException");
         }
 
-        // 작성자가 일치하는 경우에만 수정 가능
-        if(board.getUserAccount().equals(findUser)) {
-            board.updateContent(dto.getTitle(), dto.getContent());
+        // (2) UserAccount DTO -> Entity 변환
+        UserAccount loginUser = userAccountDto.toEntity();
+
+        // (3) 글 작성자가 현재 로그인 계정과 일치하는 경우에만 수정 가능
+        if(board.getUserAccount().equals(loginUser)) {
+            board.updateContent(boardPatchDto.getTitle(), boardPatchDto.getContent());
         } else {
-            throw new IllegalArgumentException("사용자 정보가 일치하지 않습니다");
+            throw new IllegalArgumentException("IllegalArgumentException.diff_user");
         }
     }
 
-    public void delete(Long boardId, UserAccount userAccount) {
+    public void delete(Long boardId, UserAccountDto userAccountDto) {
+        // (1) 게시글 조회
         Board board = findById(boardId);
 
-        // 익명 회원이 작성한 글은 일단 모두 삭제 가능
+        // (2) UserAccount DTO -> Entity 변환
+        UserAccount userAccount = userAccountDto.toEntity();
+
+        // (3) 익명 회원이 작성한 글은 모두 삭제 가능
         if(board.getUserAccount() == null) {
             boardRepository.delete(board);
             return;
         }
 
-        // 작성자 정보와 일치하는 경우에만 삭제 가능
+        // (4) 회원이 작성한 글은 작성자 정보와 일치하는 경우에만 삭제 가능
         if(board.getUserAccount().equals(userAccount)) {
             boardRepository.delete(board);
         } else {
-            throw new IllegalArgumentException("사용자 정보가 일치하지 않습니다");
+            throw new IllegalArgumentException("IllegalArgumentException.diff_user");
         }
     }
 
     @Transactional(readOnly = true)
     public Board findById(Long boardId) {
         return boardRepository.findById(boardId)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다"));
+                .orElseThrow(() -> new EntityNotFoundException("EntityNotFoundException.board"));
     }
 }
