@@ -4,7 +4,7 @@ import hyeong.lee.myboard.domain.Board;
 import hyeong.lee.myboard.domain.UserAccount;
 import hyeong.lee.myboard.dto.request.BoardRequest;
 import hyeong.lee.myboard.dto.request.UserAccountDto;
-import hyeong.lee.myboard.dto.response.BoardResponseDto;
+import hyeong.lee.myboard.dto.response.BoardResponse;
 import hyeong.lee.myboard.dto.response.BoardWithRepliesResponseDto;
 import hyeong.lee.myboard.mapper.BoardMapper;
 import hyeong.lee.myboard.repository.BoardRepository;
@@ -39,22 +39,22 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardResponseDto> searchBoards(String searchType, String searchValue, Pageable pageable) {
+    public Page<BoardResponse> searchBoards(String searchType, String searchValue, Pageable pageable) {
         if(searchValue == null || searchValue.isBlank()) { // 검색어가 비어있으면 기본 정렬(ID 내림차순)값 반환
-            return boardRepository.findAll(pageable).map(BoardResponseDto::from);
+            return boardRepository.findAll(pageable).map(BoardResponse::from);
         }
 
-        Page<BoardResponseDto> dto = null;
+        Page<BoardResponse> dto = null;
         switch(searchType) {
             case "EDITOR":
                 dto = boardRepository.findByEditorContainingIgnoreCase(searchValue, pageable)
-                        .map(BoardResponseDto::from); break;
+                        .map(BoardResponse::from); break;
             case "TITLE":
                 dto = boardRepository.findAllByTitleContainingIgnoreCase(searchValue, pageable)
-                        .map(BoardResponseDto::from); break;
+                        .map(BoardResponse::from); break;
             case "CONTENT":
                 dto = boardRepository.findAllByContentContainingIgnoreCase(searchValue, pageable)
-                        .map(BoardResponseDto::from); break;
+                        .map(BoardResponse::from); break;
         }
         return dto;
     }

@@ -2,7 +2,7 @@ package hyeong.lee.myboard.controller;
 
 import hyeong.lee.myboard.domain.Board;
 import hyeong.lee.myboard.domain.type.SearchType;
-import hyeong.lee.myboard.dto.response.BoardResponseDto;
+import hyeong.lee.myboard.dto.response.BoardResponse;
 import hyeong.lee.myboard.dto.response.BoardWithRepliesResponseDto;
 import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.BoardService;
@@ -39,7 +39,7 @@ public class BoardController {
                         @PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
                         Model model) {
 
-        Page<BoardResponseDto> boards = boardService.searchBoards(searchType, searchValue, pageable);
+        Page<BoardResponse> boards = boardService.searchBoards(searchType, searchValue, pageable);
         List<Integer> paginationNumbers = pagingService.getPaginationNumbers(pageable.getPageNumber(), boards.getTotalPages());
 
         model.addAttribute("boards", boards);
@@ -74,7 +74,7 @@ public class BoardController {
             throw new AccessDeniedException("AccessDeniedException");
         }
 
-        BoardResponseDto dto = BoardResponseDto.from(board);
+        BoardResponse dto = BoardResponse.from(board);
         model.addAttribute("board", dto);
 
         return "board/board-edit";
