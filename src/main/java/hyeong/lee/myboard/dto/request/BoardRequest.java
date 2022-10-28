@@ -1,6 +1,7 @@
 package hyeong.lee.myboard.dto.request;
 
 import lombok.*;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 
 public class BoardRequest {
 
+    @ToString
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED) // ObjectMapper(jackson) 는 NoArgs 생성자가 반드시 필요하다
     @Getter // 리플렉션을 이용해 주입하기 때문에 @Setter 필요 없음
@@ -27,7 +29,15 @@ public class BoardRequest {
         @NotBlank
         private String content;
 
+        private String password; // 비밀글 비밀번호
+
+        private Boolean secret; // 비밀글 유무
+
         private MultipartFile[] files;
+
+        public Boolean getSecret() {
+            return secret != null; // secret 체크를 하지 않았을 경우 false / 이외 true
+        }
     }
 
     @AllArgsConstructor
