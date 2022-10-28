@@ -30,34 +30,32 @@ public class FileService {
     @Value("${resources.location}")
     private String resourceLocation;
 
-    public void saveFile(Board board, MultipartFile[] files) throws IOException {
+    public void saveFile(Board board, MultipartFile file) throws IOException {
 
         String datePath = getDateDirectory();
         log.info("파일 저장 경로: {}", resourceLocation + datePath);
-        for (MultipartFile file : files) {
 
-            // 파일을 저장하기 위한 고유 이름 생성 (겹치면 안되기 때문에 UUID 이용)
-            UUID uuid = UUID.randomUUID();
-            String uniqueFileName = uuid + "_" + file.getOriginalFilename();
+        // 파일을 저장하기 위한 고유 이름 생성 (겹치면 안되기 때문에 UUID 이용)
+        UUID uuid = UUID.randomUUID();
+        String uniqueFileName = uuid + "_" + file.getOriginalFilename();
 
-            log.warn("파일 저장 >> Original_Name: {}, Unique_Name: {}, type: {}, size: {}",
-                    file.getOriginalFilename(), uniqueFileName, file.getContentType(), file.getSize());
+        log.warn("파일 저장 >> Original_Name: {}, Unique_Name: {}, type: {}, size: {}",
+                file.getOriginalFilename(), uniqueFileName, file.getContentType(), file.getSize());
 
-            UploadFile uploadFile = UploadFile.builder()
-                    .board(board)
-                    .originalFileName(file.getOriginalFilename())
-                    .uniqueFileName(uniqueFileName)
-                    .filePath(File.separator + "storage" + datePath).build();
+        UploadFile uploadFile = UploadFile.builder()
+                .board(board)
+                .originalFileName(file.getOriginalFilename())
+                .uniqueFileName(uniqueFileName)
+                .filePath(File.separator + "storage" + datePath).build();
 
-            // DB에 파일 저장
-            uploadFileRepository.save(uploadFile);
+        // DB에 파일 저장
+        uploadFileRepository.save(uploadFile);
 
-            // 실제 서버에 파일 저장
-            byte[] bytes = file.getBytes();
-            String fullPath = resourceLocation + datePath; // 절대경로
-            Path path = Paths.get(fullPath + uniqueFileName);
-            Files.write(path, bytes);
-        }
+        // 실제 서버에 파일 저장
+        byte[] bytes = file.getBytes();
+        String fullPath = resourceLocation + datePath; // 절대경로
+        Path path = Paths.get(fullPath + uniqueFileName);
+        Files.write(path, bytes);
     }
 
     /**
