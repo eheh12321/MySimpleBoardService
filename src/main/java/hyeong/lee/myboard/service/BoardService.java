@@ -54,7 +54,7 @@ public class BoardService {
         // (2) 만약 비밀글이라면 비밀번호 검증
         if(board.getPassword() != null) {
             if(password == null || !passwordEncoder.matches(password, board.getPassword())) {
-                throw new AccessDeniedException("접근 권한이 없습니다");
+                throw new AccessDeniedException("AccessDeniedException.board");
             }
         }
         // (3) 게시글 응답

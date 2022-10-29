@@ -102,7 +102,7 @@ public class BoardController {
         Board board = boardService.findById(boardId);
 
         if (boardPrincipal == null || board.getUserAccount() == null) { // 비로그인 상태거나, 익명이 작성한 글은 수정 불가
-            throw new AccessDeniedException("AccessDeniedException.Login");
+            throw new AccessDeniedException("AccessDeniedException.login");
         } else if (!board.getUserAccount().getUserId().equals(boardPrincipal.getUsername())) { // 게시글 작성자 정보가 로그인 정보와 일치하지 않으면 수정불가
             throw new AccessDeniedException("AccessDeniedException");
         }
