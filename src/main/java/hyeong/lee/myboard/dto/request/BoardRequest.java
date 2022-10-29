@@ -27,7 +27,15 @@ public class BoardRequest {
         @NotBlank
         private String content;
 
+        private String password; // 비밀글 비밀번호
+
+        private Boolean secret; // 비밀글 유무
+
         private MultipartFile[] files;
+
+        public Boolean getSecret() {
+            return secret != null; // secret 체크를 하지 않았을 경우 false / 이외 true
+        }
     }
 
     @AllArgsConstructor
@@ -40,5 +48,13 @@ public class BoardRequest {
 
         @NotBlank
         private String content;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @Getter
+    public static class BoardPasswordDto {
+        private Long boardId;
+        private String password;
     }
 }

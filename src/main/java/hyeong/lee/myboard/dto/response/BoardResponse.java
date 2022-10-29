@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class BoardResponseDto {
+public class BoardResponse {
 
     private final Long id;
     private final String title;
@@ -16,20 +16,22 @@ public class BoardResponseDto {
     private final String content;
     private final LocalDateTime createdAt;
     private final Integer replyCount;
-    private final boolean isRegisteredUser; // 익명 사용자 유무
+    private final boolean register; // 익명 사용자 유무
+    private final boolean secret; // 비밀글 유무
     
-    public static BoardResponseDto from(Board board) {
+    public static BoardResponse from(Board board) {
         String editorNickname = board.getUserAccount() == null ? board.getEditor() : board.getUserAccount().getNickname();
         boolean isRegisteredUser = board.getUserAccount() != null;
         
-        return BoardResponseDto.builder()
+        return BoardResponse.builder()
                 .id(board.getId())
                 .title(board.getTitle())
                 .editor(editorNickname)
                 .content(board.getContent())
                 .createdAt(board.getCreatedAt())
                 .replyCount(board.getReplies().size())
-                .isRegisteredUser(isRegisteredUser)
+                .register(isRegisteredUser)
+                .secret(board.getPassword() != null)
                 .build();
     }
 }

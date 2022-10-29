@@ -20,6 +20,7 @@ public class BoardWithRepliesResponseDto {
     private final List<ReplyResponseDto> replies;
     private final UserAccountResponseDto userAccount;
     private final List<UploadFileResponseDto> uploadFiles;
+    private final boolean secret;
 
     public static BoardWithRepliesResponseDto from(Board board) {
         UserAccountResponseDto userAccountResponseDto =
@@ -34,6 +35,7 @@ public class BoardWithRepliesResponseDto {
                 .replies(board.getReplies().stream().map(ReplyResponseDto::from).collect(Collectors.toList()))
                 .uploadFiles(board.getUploadFiles().stream().map(UploadFileResponseDto::from).collect(Collectors.toList()))
                 .userAccount(userAccountResponseDto)
+                .secret(board.getPassword() != null)
                 .build();
     }
 }

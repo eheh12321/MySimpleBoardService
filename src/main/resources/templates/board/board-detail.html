@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragment/base::default_header(~{::title}, ~{::link})}">
     <title>게시글 상세</title>
     <link/>
@@ -12,7 +11,10 @@
     <div class="container py-4">
         <div class="p-5 mb-4 bg-light rounded-3">
             <div class="container-fluid py-5">
-                <h5 class="display-5 fw-bold mb-3">게시글 상세</h5>
+                <h5 class="display-5 fw-bold mb-3">
+                    게시글 상세
+                    <i class="bi bi-lock" th:if="${board.secret}"></i>
+                </h5>
                 <hr>
                 <div class="input-group mb-3">
                     <span class="input-group-text">제목</span>

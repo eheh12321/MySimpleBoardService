@@ -25,6 +25,8 @@ public class Board extends AuditingFields {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    private String password; // 비밀글 조회 비밀번호 (null 유무로 비밀글 유무 체크)
+
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Reply> replies = new ArrayList<>();
 

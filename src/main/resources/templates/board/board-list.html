@@ -84,9 +84,10 @@
                         <th th:text="${board.id}">1</th>
                         <td>
                             <a th:text="${board.title}" th:href="@{/boards/{boardId}(boardId=${board.id})}">제목</a>
+                            <i class="bi bi-lock" th:if="${board.secret}"></i>
                         </td>
                         <td th:text="${board.editor}"
-                            th:class="${board.isRegisteredUser} ? 'text-success' : ''">작성자</td>
+                            th:class="${board.register} ? 'text-success' : ''">작성자</td>
                         <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}">yyyy-MM-dd
                             HH:mm:ss
                         </td>
