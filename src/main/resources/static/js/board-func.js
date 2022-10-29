@@ -121,6 +121,38 @@ function delete_reply(replyId) {
     }
 }
 
+
+function onBoardPasswordSubmit(e) {
+    e.preventDefault();
+
+    const boardId = $("#boardId").val();
+    const secret_board_data = {
+        boardId: boardId,
+        password: $("#loginPw").val()
+    };
+    $(".field-error").text("");
+
+    $.ajax({
+        type:"POST",
+        url:"/api/boards/" + boardId + "/auth",
+        dataType: "JSON",
+        data: JSON.stringify(secret_board_data),
+        contentType: 'application/json; charset=utf-8',
+        success: function (result) {
+            window.location.replace("/boards/" + boardId);
+        },
+        error: function (result) {
+            markingErrorField(result);
+        }
+    });
+}
+
+function board_secret_auth_init() {
+    const board_auth_form = $("#board-auth-form")[0];
+    console.log("페이지 초기화 완료");
+    board_auth_form.addEventListener("submit", onBoardPasswordSubmit);
+}
+
 function markingErrorField(response) {
     const errorFields = response.responseJSON.errors;
     if(!errorFields) {
