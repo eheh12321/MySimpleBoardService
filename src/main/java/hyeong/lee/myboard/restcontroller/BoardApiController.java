@@ -4,13 +4,17 @@ import hyeong.lee.myboard.dto.request.BoardRequest;
 import hyeong.lee.myboard.dto.request.UserAccountDto;
 import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.BoardService;
+import hyeong.lee.myboard.validator.BoardPasswordValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -20,6 +24,12 @@ import javax.validation.Valid;
 public class BoardApiController {
 
     private final BoardService boardService;
+    private final BoardPasswordValidator boardPasswordValidator;
+
+    @InitBinder("boardPasswordDto") // boardPasswordDto에 한해서만 검증해라!!
+    protected void initBinder(WebDataBinder dataBinder) {
+        dataBinder.addValidators(boardPasswordValidator);
+    }
 
     @PostMapping
     public ResponseEntity<?> create(
@@ -32,8 +42,8 @@ public class BoardApiController {
 
     @PatchMapping("/{boardId}")
     public ResponseEntity<?> update(@PathVariable Long boardId,
-                                       @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
-                                       @Valid @RequestBody BoardRequest.BoardPatchDto boardPatchDto) {
+                                    @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
+                                    @Valid @RequestBody BoardRequest.BoardPatchDto boardPatchDto) {
         UserAccountDto userAccountDto = (boardPrincipal == null ? null : boardPrincipal.toDto());
         boardService.update(boardId, boardPatchDto, userAccountDto);
         return ResponseEntity.ok(boardId);
@@ -44,6 +54,14 @@ public class BoardApiController {
                                        @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal) {
         UserAccountDto userAccountDto = (boardPrincipal == null ? null : boardPrincipal.toDto());
         boardService.delete(boardId, userAccountDto);
+        return ResponseEntity.ok(boardId);
+    }
+
+    @PostMapping("/{boardId}/auth")
+    public ResponseEntity<?> checkBoardPassword(@PathVariable Long boardId,
+                                                @Valid @RequestBody BoardRequest.BoardPasswordDto boardPasswordDto,
+                                                HttpSession session) {
+        session.setAttribute("secret_board_" + boardId, boardPasswordDto.getPassword());
         return ResponseEntity.ok(boardId);
     }
 }
