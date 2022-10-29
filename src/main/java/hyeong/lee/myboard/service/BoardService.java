@@ -33,9 +33,32 @@ public class BoardService {
     private final BoardMapper boardMapper;
     private final PasswordEncoder passwordEncoder; // BCryptEncoder
 
+
+    @Transactional(readOnly = true) // 비밀글 유무 리턴
+    public boolean isSecretBoard(Long boardId) {
+        Board board = findById(boardId);
+        return board.getPassword() != null;
+    }
+
+    @Transactional(readOnly = true) // 비밀글 비밀번호 맞는지 유무 검증
+    public boolean isMatchSecretPassword(Long boardId, String rawPassword) {
+        Board board = findById(boardId);
+        return passwordEncoder.matches(rawPassword, board.getPassword());
+    }
+
     @Transactional(readOnly = true) // 댓글 정보와 함께 단건 읽기
-    public BoardWithRepliesResponseDto readWithRepliesById(Long boardId) {
-        return BoardWithRepliesResponseDto.from(findById(boardId));
+    public BoardWithRepliesResponseDto readWithRepliesById(Long boardId, String password) {
+        // (1) 게시글 조회
+        Board board = findById(boardId);
+        
+        // (2) 만약 비밀글이라면 비밀번호 검증
+        if(board.getPassword() != null) {
+            if(password == null || !passwordEncoder.matches(password, board.getPassword())) {
+                throw new AccessDeniedException("접근 권한이 없습니다");
+            }
+        }
+        // (3) 게시글 응답
+        return BoardWithRepliesResponseDto.from(board);
     }
 
     @Transactional(readOnly = true)
