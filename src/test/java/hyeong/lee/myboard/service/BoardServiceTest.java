@@ -14,6 +14,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
@@ -35,6 +36,8 @@ public class BoardServiceTest {
     private BoardRepository boardRepository;
     @Mock
     private FileService fileService;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @Spy // 이 테스트 코드에서 직접 사용되지는 않지만 sut 메서드 호출 시에 내부에서 실제 기능이 동작하는 용도
     private BoardMapper boardMapper;
@@ -56,11 +59,11 @@ public class BoardServiceTest {
 
         // 생성할 게시글 정보를 담은 DTOs
         BoardRequest.BoardPostDto boardPostDto =
-                new BoardRequest.BoardPostDto("title", "editor", "content", multipartFiles);
+                new BoardRequest.BoardPostDto("title", "editor", "content", null, false, multipartFiles);
         UserAccountDto userAccountDto = createUserAccountDto("userId");
 
         // 저장된 엔티티
-        Board savedEntity = createBoard(createUserAccount("userId"));
+        Board savedEntity = createBoard(createUserAccount("userId"), null);
 
         given(boardRepository.save(any(Board.class))).willReturn(savedEntity);
         willDoNothing().given(fileService).saveFile(any(Board.class), any(MultipartFile.class));
@@ -89,7 +92,7 @@ public class BoardServiceTest {
         UserAccountDto userAccountDto = null;
 
         // 기존에 저장된 게시글 데이터
-        Board board = createBoard(null);
+        Board board = createBoard(null, null);
         given(boardRepository.findById(boardId)).willReturn(Optional.of(board));
 
         // When
@@ -110,7 +113,7 @@ public class BoardServiceTest {
         UserAccountDto userAccountDto = createUserAccountDto("userId");
 
         UserAccount differentUserAccount = createUserAccount("diffUserId");
-        Board board = createBoard(differentUserAccount);
+        Board board = createBoard(differentUserAccount, null);
         given(boardRepository.findById(boardId)).willReturn(Optional.of(board));
 
         // When
@@ -127,6 +130,7 @@ public class BoardServiceTest {
     /**
      * 게시글 상세 조회 테스트
      * - 없는 게시글을 조회하려 할 때 EntityNotFoundException 터지는지 검증
+     * - 비밀글 조회 시 입력 비밀번호가 없으면 AccessDeniedException 터지는지 검증
     */
     @Test
     void 게시글_조회_없는글_예외발생() {
@@ -135,13 +139,30 @@ public class BoardServiceTest {
         given(boardRepository.findById(boardId)).willReturn(Optional.empty());
 
         // When
-        Throwable t = catchThrowable(() -> sut.readWithRepliesById(boardId));
+        Throwable t = catchThrowable(() -> sut.readWithRepliesById(boardId, null));
 
         // Then
         assertThat(t)
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("EntityNotFoundException.board");
         then(boardRepository).should().findById(boardId);
+    }
+
+    @Test
+    void 게시글_조회_비밀글_비밀번호없음_예외발생() {
+        // Given
+        Long boardId = 1L;
+
+        Board findBoard = createBoard(null, "boardPassword"); // 비밀글
+        given(boardRepository.findById(boardId)).willReturn(Optional.of(findBoard));
+
+        // When
+        Throwable t = catchThrowable(() -> sut.readWithRepliesById(boardId, null));
+
+        // Then
+        assertThat(t)
+                .isInstanceOf(AccessDeniedException.class)
+                .hasMessage("AccessDeniedException.board");
     }
 
     /**
@@ -155,7 +176,7 @@ public class BoardServiceTest {
         UserAccountDto userAccountDto = createUserAccountDto("user");
 
         UserAccount diffUser = createUserAccount("diffUser");
-        Board board = createBoard(diffUser);
+        Board board = createBoard(diffUser, null);
 
         given(boardRepository.findById(boardId)).willReturn(Optional.of(board));
 
@@ -169,7 +190,7 @@ public class BoardServiceTest {
         then(boardRepository).should().findById(boardId);
     }
 
-    private Board createBoard(UserAccount userAccount) {
+    private Board createBoard(UserAccount userAccount, String password) {
         return Board.builder()
                 .id(1L)
                 .title("title")
@@ -177,7 +198,8 @@ public class BoardServiceTest {
                 .editor("editor")
                 .userAccount(userAccount)
                 .replies(null)
-                .uploadFiles(null).build();
+                .uploadFiles(null)
+                .password(password).build();
     }
 
     private UserAccount createUserAccount(String userId) {
