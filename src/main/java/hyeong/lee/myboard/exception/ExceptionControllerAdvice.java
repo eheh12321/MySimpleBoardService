@@ -66,9 +66,12 @@ public class ExceptionControllerAdvice {
      */
     @ExceptionHandler(RuntimeException.class)
     public void handleRuntimeException(RuntimeException exception,
+                                       HttpServletRequest request,
                                        HttpServletResponse response) throws IOException {
         log.error("[RuntimeException] handle -> {}", exception.getMessage());
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, exception.getMessage());
+
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                messageSource.getMessage(exception.getMessage(), null, request.getLocale()));
     }
 
     /**
