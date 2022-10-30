@@ -8,6 +8,7 @@ import hyeong.lee.myboard.mapper.BoardMapper;
 import hyeong.lee.myboard.repository.BoardRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -40,7 +41,7 @@ public class BoardServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Spy // 이 테스트 코드에서 직접 사용되지는 않지만 sut 메서드 호출 시에 내부에서 실제 기능이 동작하는 용도
-    private BoardMapper boardMapper;
+    private BoardMapper boardMapper = Mappers.getMapper(BoardMapper.class);
 
     /**
      * 게시글 생성 테스트
