@@ -13,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -34,7 +33,7 @@ public class BoardApiController {
     @PostMapping
     public ResponseEntity<?> create(
             @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
-            @Valid BoardRequest.BoardPostDto boardPostDto) {
+            @Valid BoardRequest.BoardPostDto boardPostDto) { // 'multipart/form-data' 방식으로 보내기 때문에 @RequestBody 붙이지 않는다!
         UserAccountDto userAccountDto = (boardPrincipal == null ? null : boardPrincipal.toDto());
         Long boardId = boardService.create(boardPostDto, userAccountDto);
         return ResponseEntity.ok(boardId);

@@ -84,7 +84,8 @@ public class BoardService {
 
     public Long create(BoardRequest.BoardPostDto boardPostDto, UserAccountDto userAccountDto) {
         // (1) Dto -> Entity 변환
-        Board board = boardMapper.BoardPostDtoToBoardEntity(boardPostDto, userAccountDto, passwordEncoder);
+        UserAccount userAccount = boardMapper.userAccountDtoToUserAccountEntity(userAccountDto);
+        Board board = boardMapper.boardPostDtoToBoardEntity(boardPostDto, userAccount, passwordEncoder);
 
         // (2) Entity 저장
         Board savedBoard = boardRepository.save(board);
