@@ -1,7 +1,6 @@
 package hyeong.lee.myboard.restcontroller;
 
-import hyeong.lee.myboard.domain.UserAccount;
-import hyeong.lee.myboard.dto.request.ReplyRequestDto;
+import hyeong.lee.myboard.dto.request.ReplyRequest;
 import hyeong.lee.myboard.dto.request.UserAccountDto;
 import hyeong.lee.myboard.dto.security.BoardPrincipal;
 import hyeong.lee.myboard.service.ReplyService;
@@ -23,14 +22,9 @@ public class ReplyApiController {
     @PostMapping
     public ResponseEntity<?> create(
             @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
-            @Valid @RequestBody ReplyRequestDto dto) {
-
-        if (boardPrincipal != null) {
-            UserAccountDto userAccountDto = boardPrincipal.toDto();
-            dto.setEditor(userAccountDto.getNickname());
-            dto.setUserAccountDto(userAccountDto);
-        }
-        Long replyId = replyService.create(dto);
+            @Valid @RequestBody ReplyRequest replyRequest) {
+        UserAccountDto userAccountDto = (boardPrincipal == null ? null : boardPrincipal.toDto());
+        Long replyId = replyService.create(replyRequest, userAccountDto);
         return ResponseEntity.ok(replyId);
     }
 
@@ -38,10 +32,8 @@ public class ReplyApiController {
     public ResponseEntity<Long> delete(
             @AuthenticationPrincipal @Nullable BoardPrincipal boardPrincipal,
             @PathVariable Long replyId) {
-
-        // 비로그인 상태라도 댓글 삭제 가능 (단, 회원이 작성한 글에 대한 삭제는 불가능)
-        UserAccount userAccount = boardPrincipal == null ? null : boardPrincipal.toEntity();
-        replyService.delete(replyId, userAccount);
+        UserAccountDto userAccountDto = (boardPrincipal == null ? null : boardPrincipal.toDto());
+        replyService.delete(replyId, userAccountDto);
         return ResponseEntity.ok(replyId);
     }
 }

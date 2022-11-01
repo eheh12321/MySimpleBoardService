@@ -31,7 +31,7 @@ spring:
     basename: errors
 
 # 저장소 경로 변수
-resources.location: C:\Users\HOME\Desktop\Java_study\MySimpleBoardService\storage
+my.resourcesPath: C:\Users\HOME\Desktop\Java_study\MySimpleBoardService\storage
 
 --- # 로컬 환경 설정
 spring:
@@ -46,4 +46,4 @@ spring:
     activate:
       on-profile: prod
 
-resources.location: /home/ec2-user/app/mySimpleBoardService_build/storage # 클라우드 환경 저장소 경로
+my.resourcesPath: /home/ec2-user/app/mySimpleBoardService_build/storage # 클라우드 환경 저장소 경로

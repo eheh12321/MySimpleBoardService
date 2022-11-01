@@ -5,8 +5,8 @@ plugins {
 }
 
 group = 'hyeong.lee'
-version = '1.0.1-SNAPSHOT-' + new Date().format("yyyyMMddHHmmss")
-sourceCompatibility = '11'
+version = '1.0.2-SNAPSHOT-' + new Date().format("yyyyMMddHHmmss")
+sourceCompatibility = '11' // 소스 코드에서 사용할 수 있는 Java 버전을 해당 버전 값으로 제한하는 역할
 
 configurations {
     compileOnly {
@@ -46,6 +46,9 @@ dependencies {
     // Mapper
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
+    // Config
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 
 tasks.named('test') {
