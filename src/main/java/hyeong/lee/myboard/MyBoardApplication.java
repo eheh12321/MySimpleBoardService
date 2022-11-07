@@ -3,8 +3,10 @@ package hyeong.lee.myboard;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 
-@ConfigurationPropertiesScan("hyeong.lee.myboard.config")
+@EnableAsync
+@ConfigurationPropertiesScan("hyeong.lee.myboard.dto.properties")
 @SpringBootApplication
 public class MyBoardApplication {
 

@@ -29,6 +29,17 @@ spring:
     static-path-pattern: /resources/** # 정적 리소스에 접근할 때는 항상 아래 경로로 요청
   messages: # 메세지 소스 설정
     basename: errors
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: [내 이메일 ID]
+    password: [내 이메일 PW]
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls.enable: true
 
 # 저장소 경로 변수
 my.resourcesPath: C:\Users\HOME\Desktop\Java_study\MySimpleBoardService\storage
