@@ -1,4 +1,4 @@
-package hyeong.lee.myboard.config;
+package hyeong.lee.myboard.dto.properties;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package hyeong.lee.myboard.service;
 
-import hyeong.lee.myboard.config.MyProperties;
+import hyeong.lee.myboard.dto.properties.MyProperties;
 import hyeong.lee.myboard.domain.Board;
 import hyeong.lee.myboard.domain.UploadFile;
 import hyeong.lee.myboard.repository.UploadFileRepository;

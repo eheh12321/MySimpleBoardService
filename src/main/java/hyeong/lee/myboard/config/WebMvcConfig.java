@@ -1,5 +1,6 @@
 package hyeong.lee.myboard.config;
 
+import hyeong.lee.myboard.dto.properties.MyProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
