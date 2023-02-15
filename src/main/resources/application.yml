@@ -57,4 +57,4 @@ spring:
     activate:
       on-profile: prod
 
-my.resourcesPath: /home/ec2-user/app/mySimpleBoardService_build/storage # 클라우드 환경 저장소 경로
+my.resourcesPath: /home/ec2-user/app/mySimpleBoardService/storage # 클라우드 환경 저장소 경로

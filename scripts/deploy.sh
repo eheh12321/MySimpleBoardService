@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPOSITORY=/home/ec2-user/app/mySimpleBoardService_build
+REPOSITORY=/home/ec2-user/app/mySimpleBoardService
 PROJECT_NAME=mySimpleBoardService
 
 echo "> 현재 8080 포트를 사용중인 애플리케이션 종료"
