@@ -49,12 +49,3 @@ spring:
   config:
     activate:
       on-profile: local
-
---- # 배포 환경 (Prod)
-
-spring:
-  config:
-    activate:
-      on-profile: prod
-
-my.resourcesPath: /home/ec2-user/app/mySimpleBoardService/storage # 클라우드 환경 저장소 경로
