@@ -13,11 +13,11 @@
 
 [ 프로그래밍 언어 ] - **Java 11**
 
-[ 프레임워크 ] - **Spring(Spring Boot, JPA, Security, Junit5), MapStruct**
+[ 프레임워크 ] - **Spring(Spring Boot, JPA, Security)**
 
 [ DB ] - **MySQL**
 
-[ 클라우드 및 배포 ] - **AWS(EC2, S3, CodeDeploy), Jenkins**
+[ 클라우드 및 배포 ] - **AWS(EC2, RDS, S3, CodeDeploy), Jenkins**
 
 [ 그 외 ] - HTML/CSS/JS, AJAX, Thymeleaf
 
