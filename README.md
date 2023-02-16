@@ -1,15 +1,25 @@
 # 기본적인 게시판 서비스
 > 글쓰기, 회원가입, 페이징, 정렬, 첨부파일 업로드 등 기본적인 기능들을 구현한 기본적인 게시판 서비스입니다. 
 
+> :link: 배포 주소: https://myprojectsite.shop:8080/
+
 <br>
 
 <img alt="main" src="https://user-images.githubusercontent.com/74748851/197431094-22694ebc-9879-47c4-92c4-ba82741ba650.PNG" height="400"/>
 
-- 배포 링크: http://ec2-3-35-151-134.ap-northeast-2.compute.amazonaws.com:8080/
 <br>
 
 ## 1. 기술 스택
-![image](https://user-images.githubusercontent.com/74748851/200000775-32f27669-e67a-42d7-810b-2848f81bc6cd.png)
+
+[ 프로그래밍 언어 ] - **Java 11**
+
+[ 프레임워크 ] - **Spring(Spring Boot, JPA, Security, Junit5), MapStruct**
+
+[ DB ] - **MySQL**
+
+[ 클라우드 및 배포 ] - **AWS(EC2, S3, CodeDeploy), Jenkins**
+
+[ 그 외 ] - HTML/CSS/JS, AJAX, Thymeleaf
 
 <br>
 
@@ -23,4 +33,5 @@
 <br>
 
 ## 3. 구현된 주요 기능
-![image](https://user-images.githubusercontent.com/74748851/200000876-7e7ccb6f-21b1-4424-801e-dc68828f22b9.png)
+![image](https://user-images.githubusercontent.com/74748851/219304047-4a451ee0-5f2c-44c8-af86-5515fcdb4f17.png)
+
